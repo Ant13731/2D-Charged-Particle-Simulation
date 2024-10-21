@@ -1,0 +1,97 @@
+%use command pdflatex filename.tex
+\documentclass{article}
+%\usepackage[noend]{algpseudocode}
+%\usepackage{parskip}
+% \usepackage{tikz, changepage, amssymb}
+% \usetikzlibrary{automata,positioning,arrows}
+\usepackage{amsmath, amsthm}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{url}
+
+\lstset{
+  language=python,
+  basicstyle=\ttfamily,
+  mathescape,
+  morecomment=[l][\color{olive}]{\#},
+  breaklines=true,
+  postbreak=\space
+}
+\title{DATASCI 2G03 Project Proposal \\\large
+Elastic Collisions between Contained Particles}
+\author{Anthony Hunt}
+
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+Simple 2D video games like pong, brick breaker, or even 8 ball pool have a great deal of both physical and computational concerns. In particular, this project aims to simulate the motion of moving particles and the collision interactions between them.
+\\
+The main problems we will be solving are:
+
+\begin{itemize}
+    \item Motion of several (round) particles with parametric starting configurations
+    \item Elastic collisions between particles and a bounding box
+\end{itemize}
+
+The first part of this project will consist of modelling the interaction between many particles in a containing box the hopes of achieving a 2D Maxwell–Boltzmann distribution of velocities. Then, we will extend these interactions with the addition of charged particles to simulate non-constant acceleration.
+
+
+\section*{Equations}
+The ODEs and other equations used to simulate this problem are listed below. The goal of this simulation is to track the position of objects (represented by $s$) over some length of time $t$. Each particle will have some mass $m$ and starting velocity $v$.
+
+Velocity ($v$) of one particle:
+$$v = \frac{ds}{dt}$$
+
+Acceleration ($a$) of one particle:
+$$a = \frac{dv}{dt} = \frac{d^2s}{dt^2}$$
+
+Momentum of one particle:
+$$p = mv$$
+
+Kinetic energy of one particle:
+$$E = \frac{1}{2}mv^2$$
+
+Newton's second law:
+$$F = ma$$
+
+The below equations are concerned with calculating the vectors of velocity resulting from an elastic collision. Let $v_1$ represent the first particle's velocity and $v_2$ for the second particle's velocity. Additionally, let $v'$ represent the velocity after the collision and $v$ for the velocities prior to the collision.
+
+$$
+\begin{aligned}
+\mathbf {v} '_{1}&=\mathbf {v} _{1}-{\frac {2m*{2}}{m*{1}+m*{2}}}\ {\frac {\langle \mathbf {v} *{1}-\mathbf {v} _{2},\,\mathbf {x} _{1}-\mathbf {x} _{2}\rangle }{\|\mathbf {x} _{1}-\mathbf {x} _{2}\|^{2}}}\ (\mathbf {x} _{1}-\mathbf {x} _{2})\\
+\mathbf {v} '_{2}&=\mathbf {v} _{2}-{\frac {2m_{1}}{m*{1}+m*{2}}}\ {\frac {\langle \mathbf {v} _{2}-\mathbf {v} _{1},\,\mathbf {x} _{2}-\mathbf {x} _{1}\rangle }{\|\mathbf {x} _{2}-\mathbf {x} _{1}\|^{2}}}\ (\mathbf {x} _{2}-\mathbf {x} _{1})
+\end{aligned}
+$$
+
+Coulomb's law: Force of charged particles against one another:
+$$F_{charge} = \frac{kq_1q_2}{r^2}$$
+
+\section*{Configuration Parameters}
+\begin{itemize}
+    \item Starting position $s$ of each particle
+    \item Initial velocity $v$ of each particle
+    \item Mass $m$ of each particle
+    \item Radius of each particle $r$
+    \item Charge of different particles $q$
+\end{itemize}
+
+\section*{Interesting Properties}
+\begin{itemize}
+    \item Number of times a particle is hit before stopping the simulation
+    \item Speed of particles over time (momentum of all particles should remain constant) position of particles on a graph
+    \item Distribution of particle speeds (Maxwell–Boltzmann distribution)
+    \item Unique path of each particle
+\end{itemize}
+
+\section*{References}
+\begin{itemize}
+    \item Equations of motion: \url{https://en.wikipedia.org/wiki/Equations_of_motion}
+    \item Elastic collisions: \url{https://en.wikipedia.org/wiki/Elastic_collision}
+    \item Maxwell-Boltzmann distribution: \url{https://en.wikipedia.org/wiki/Maxwell-Boltzmann_distribution}
+\end{itemize}
+
+
+\end{document}
