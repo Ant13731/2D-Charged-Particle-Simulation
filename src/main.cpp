@@ -3,8 +3,8 @@
 #include "cpgplot.h"
 #include <iostream>
 #include <ctime>
-#include <thread>
-#include <chrono>
+// #include <thread>
+// #include <chrono>
 
 int main()
 {
@@ -55,7 +55,7 @@ int main()
         {
             if (current_particles[i].is_charged())
                 cpgsci(0);
-            else if (current_particles[i].charge > 0)
+            else if (reinterpret_cast<ChargedParticle *>(current_particles)[i].charge > 0)
                 cpgsci(2);
             else
                 cpgsci(4);
@@ -81,7 +81,7 @@ int main()
                     continue;
                 velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
                 if (current_particles[i].is_charged())
-                    acceleration_contributions_for_i += current_particles[i].get_acceleration_contributions(current_particles[j]);
+                    acceleration_contributions_for_i += (reinterpret_cast<ChargedParticle *>(current_particles)[i]).get_acceleration_contributions(current_particles[j]);
             }
 
             next_particles[i].velocity += velocity_contributions_for_i;
@@ -105,14 +105,14 @@ int main()
             break;
 
         // 'x' corresponds to a right click: zoom out
-        if (ch == 'x' || ch == 'X' || ch == 'd' || ch == 'D')
+        if (input_ch == 'x' || input_ch == 'X' || input_ch == 'd' || input_ch == 'D')
         {
             std::cout << "Advancing dt by " << dt << "seconds" << std::endl;
             continue;
         }
 
         // space or 'q' quits
-        if (ch == ' ' || ch == 'q' || ch == 'Q')
+        if (input_ch == ' ' || input_ch == 'q' || input_ch == 'Q')
         {
             return 0;
         }
