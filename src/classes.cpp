@@ -129,7 +129,7 @@ Vec2D Particle::get_velocity_contributions(Particle &other)
     float distance = std::pow((position - other.position).length(), 2);
     float velocity_coefficient = inner_product / distance;
 
-    return (position - other.position) * mass_coefficient * velocity_coefficient;
+    return (other.position - position) * mass_coefficient * velocity_coefficient;
 }
 
 Vec2D Particle::get_acceleration_contributions(Particle &other)

@@ -91,9 +91,11 @@ int main()
 
     cpgenv(-sqr_bounds * 1.1, sqr_bounds * 1.1, -sqr_bounds * 1.1, sqr_bounds * 1.1, 0, 1);
     // Step 3: While user has not exited the program
+    char *axis_opts = "BCTSI";
     for (int counter = 0;; counter++)
     {
         cpgeras();
+        cpgbox(axis_opts, 0.0, 0, axis_opts, 0.0, 0);
 
         auto iteration_timer = std::chrono::high_resolution_clock::now();
 
