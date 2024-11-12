@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Vec2D
 {
@@ -21,6 +22,9 @@ public:
     Vec2D normalize() const;
 };
 
+// TODO just make these one class with charge = 0 for normal particles
+//  make a rand generator for both particles and charged particles
+//  too much headache otherwise
 class Particle
 {
 public:
@@ -28,29 +32,22 @@ public:
     Vec2D velocity;
     Vec2D acceleration;
     float mass;
+    float charge;
 
-    Particle(Vec2D position, Vec2D velocity, float mass);
+    Particle(Vec2D position, Vec2D velocity, float mass, float charge);
+    Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge);
+
     Particle();
     static Particle make_rand_particle(float sqr_bounds);
+    static Particle make_rand_charged_particle(float sqr_bounds);
     Particle clone();
 
     bool particles_collided(Particle &other);
+    bool particles_facing_each_other(Particle &other);
     Vec2D get_velocity_contributions(Particle &other);
-    bool is_charged();
-};
-
-class ChargedParticle : public Particle
-{
-public:
-    float charge;
-
-    ChargedParticle(Vec2D position, Vec2D velocity, float mass, Vec2D acceleration, float charge);
-    ChargedParticle();
-    static ChargedParticle make_rand_particle(float sqr_bounds);
-    ChargedParticle clone();
-
     Vec2D get_acceleration_contributions(Particle &other);
-    Vec2D get_acceleration_contributions(ChargedParticle &other);
+    bool is_charged();
+    std::string to_string();
 };
 
 class Container
@@ -58,7 +55,7 @@ class Container
 public:
     virtual bool is_in_bounds(Vec2D position) = 0;
     virtual Vec2D get_closest_in_bounds_normal(Vec2D position) = 0;
-    virtual void handle_collision(Particle &particle) = 0;
+    virtual Vec2D get_collision_velocity(Particle &particle) = 0;
 };
 
 class RectangleContainer : public Container
@@ -68,7 +65,8 @@ public:
     float right;
     float top;
     float bottom;
+    RectangleContainer(float left, float right, float top, float bottom);
     bool is_in_bounds(Vec2D position);
     Vec2D get_closest_in_bounds_normal(Vec2D position);
-    void handle_collision(Particle &particle);
+    Vec2D get_collision_velocity(Particle &particle);
 };
