@@ -1,5 +1,5 @@
 main: main.o classes.o ode.o aggregates.o classes.h ode.h table.h aggregates.h
-	c++ --std=c++11 -o main main.o classes.o ode.o aggregates.o -ltrapfpe -lpgplot -lcpgplot -lX11
+	c++ --std=c++11 -O0 -o main main.o classes.o ode.o aggregates.o -ltrapfpe -lpgplot -lcpgplot -lX11
 
 main.o: main.cpp classes.h ode.h table.h
 	c++ --std=c++11 -c main.cpp

@@ -1,5 +1,6 @@
-// TABLE FORMATTER
-// Code taken from https://github.com/haarcuba/cpp-text-table
+// TABLE FORMATTER for debugging
+// Disclaimer: I did not write this code, it was taken from
+// https://github.com/haarcuba/cpp-text-table
 
 #pragma once
 

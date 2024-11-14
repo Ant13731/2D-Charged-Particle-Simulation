@@ -4,6 +4,7 @@
 #include <string>
 #include "classes.h"
 
+// Vector constructors and methods (standard vector operations)
 Vec2D::Vec2D(float x, float y) : x(x), y(y) {}
 Vec2D::Vec2D() : x(0), y(0) {}
 
@@ -39,10 +40,6 @@ float Vec2D::dot(const Vec2D &v) const
 {
     return x * v.x + y * v.y;
 }
-// float cross(const Vec2D &v) const
-// {
-//     return x * v.y - y * v.x;
-// }
 float Vec2D::length() const
 {
     return std::sqrt(x * x + y * y);
@@ -55,25 +52,8 @@ Vec2D Vec2D::normalize() const
 {
     return *this / length();
 }
-// Vec2D rotate(float angle) const
-// {
-//     float c = cos(angle);
-//     float s = sin(angle);
-//     return Vec2D(x * c - y * s, x * s + y * c);
-// }
-// Vec2D reflect(const Vec2D &normal) const
-// {
-//     return *this - normal * 2 * dot(normal);
-// }
-// Vec2D project(const Vec2D &v) const
-// {
-//     return v * dot(v) / v.dot(v);
-// }
-// Vec2D projectOntoUnit(const Vec2D &v) const
-// {
-//     return v * dot(v);
-// }
 
+// Particle constructors and methods
 Particle::Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge)
     : position(position), velocity(velocity), acceleration(acceleration), mass(mass), charge(charge) {}
 Particle::Particle(Vec2D position, Vec2D velocity, float mass, float charge)
@@ -88,32 +68,16 @@ Particle Particle::clone()
 
 bool Particle::particles_collided(Particle &other)
 {
-    // std::cout << "Particles " << (position - other.position).length() << " apart\n";
-
     return (position - other.position).length() < 0.5;
     // return (position - other.position).length() < 0.1;
 }
 
 bool Particle::particles_facing_each_other(Particle &other)
 {
+    // Unused - was testing to ensure the velocity updates were working correctly
+    // This idea didn't really work though
     return (velocity - other.velocity).dot(position - other.position) < 0;
 }
-
-// void Particle::update_velocity(Particle &other)
-// {
-//     if (!particles_collided(other))
-//     {
-//         return;
-//     }
-
-//     float mass_coefficient = (other.mass * 2) / (other.mass + mass);
-//     float inner_product = (velocity - other.velocity).dot(position - other.position);
-//     float distance = std::pow((position - other.position).length(), 2);
-//     float velocity_coefficient = inner_product / distance;
-
-//     velocity = velocity - mass_coefficient * velocity_coefficient * (position - other.position);
-// }
-// void update_acceleration(Particle &other) {}
 
 Vec2D Particle::get_velocity_contributions(Particle &other)
 {
@@ -124,6 +88,7 @@ Vec2D Particle::get_velocity_contributions(Particle &other)
 
     std::cout << "Particles collided\n";
 
+    // 2D elastic collision
     float mass_coefficient = (other.mass * 2) / (other.mass + mass);
     float inner_product = (velocity - other.velocity).dot(position - other.position);
     float distance = std::pow((position - other.position).length(), 2);
@@ -134,29 +99,25 @@ Vec2D Particle::get_velocity_contributions(Particle &other)
 
 Vec2D Particle::get_acceleration_contributions(Particle &other)
 {
+    // Acceleration can only be applied if both particles are charged
     if (!is_charged() || !other.is_charged())
     {
         return Vec2D();
     }
+
     float distance = std::pow((position - other.position).length(), 2);
     float k = 8.99e9;
     return (position - other.position) * k * charge * other.charge / (distance * mass) * 1e-9;
 }
 bool Particle::is_charged() { return !(charge < 0.000001 && charge > -0.000001); }
 
-// void ChargedParticle::update_acceleration(ChargedParticle &other)
-// {
-//     float distance = std::pow((position - other.position).length(), 2);
-//     float k = 8.99 * std::pow(10, 9);
-//     float acceleration_coefficient = k * charge * other.charge / (distance * mass);
-//     acceleration = acceleration + acceleration_coefficient * (position - other.position);
-// }
-
 Particle Particle::make_rand_particle(float sqr_bounds)
 {
+    // Randomly generate a particle within the bounds of the container
+    // Velocity is bounded by container size too
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<float> dist(-sqr_bounds / 2., sqr_bounds / 2.);
+    std::uniform_real_distribution<float> dist(-sqr_bounds / 1.05, sqr_bounds / 1.05);
 
     Vec2D position = Vec2D(dist(mt), dist(mt));
     Vec2D velocity = Vec2D(dist(mt), dist(mt));
@@ -167,9 +128,10 @@ Particle Particle::make_rand_particle(float sqr_bounds)
 }
 Particle Particle::make_rand_charged_particle(float sqr_bounds)
 {
+    // Same as above but with a charge
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<float> dist(-sqr_bounds / 2., sqr_bounds / 2.);
+    std::uniform_real_distribution<float> dist(-sqr_bounds / 1.05, sqr_bounds / 1.05);
 
     Vec2D position = Vec2D(dist(mt), dist(mt));
     Vec2D velocity = Vec2D(dist(mt), dist(mt));
@@ -186,6 +148,7 @@ Particle Particle::make_rand_charged_particle(float sqr_bounds)
 }
 std::string Particle::to_string()
 {
+    // For debugging
     return "Position: (" + std::to_string(position.x) + ", " + std::to_string(position.y) + ")\n" +
            "Velocity: (" + std::to_string(velocity.x) + ", " + std::to_string(velocity.y) + ")\n" +
            "Acceleration: (" + std::to_string(acceleration.x) + ", " + std::to_string(acceleration.y) + ")\n" +
@@ -193,6 +156,7 @@ std::string Particle::to_string()
            "Charge: " + std::to_string(charge) + "\n";
 }
 
+// Bounding box constructor/methods
 RectangleContainer::RectangleContainer(float left, float right, float top, float bottom) : left(left), right(right), top(top), bottom(bottom) {}
 
 bool RectangleContainer::is_in_bounds(Vec2D position)
@@ -202,6 +166,7 @@ bool RectangleContainer::is_in_bounds(Vec2D position)
 
 Vec2D RectangleContainer::get_closest_in_bounds_normal(Vec2D position)
 {
+    // Reflect vector if out of bounds - unused in favour of simpler checks below
     Vec2D normal = Vec2D();
     if (position.x < left)
     {
@@ -230,6 +195,7 @@ Vec2D RectangleContainer::get_collision_velocity(Particle &particle)
         return new_velocity;
     }
 
+    // Reflect velocity vectors if out of bounds
     // Vec2D normal = get_closest_in_bounds_normal(particle.position);
     // src: https://math.stackexchange.com/questions/13261/how-to-get-a-reflection-vector
     // particle.velocity = particle.velocity - (normal * 2 * particle.velocity.dot(normal));

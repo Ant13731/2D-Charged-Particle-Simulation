@@ -22,9 +22,6 @@ public:
     Vec2D normalize() const;
 };
 
-// TODO just make these one class with charge = 0 for normal particles
-//  make a rand generator for both particles and charged particles
-//  too much headache otherwise
 class Particle
 {
 public:

@@ -5,30 +5,46 @@
 #include "aggregates.h"
 #include <iostream>
 #include <ctime>
+#include <cmath>
 #include <chrono>
-/*
-Current problems:
-1. does recreating Particles in the array waste a lot of memory? If so,
-    just make two arrays at the beginning and continuously update the values
-2. particles fly away if they gain too much acceleration - should I put a cap on that?
-3. graph not clearing properly
-4. If collisions happen too slowly, the velocity of particles will be contributed more than once.
-    This makes the particles gain a sudden burst of velocity and fly away
-    - Solution: make a list of particles that have already collided with the current particle.
-        Then we only allow those particles to collide again if they havent collided for more than one step
-    - Solution: see if the velocity vectors are still pointing towards each other
-    - Solution: dont use these equations at all - instead calculate force?
-        https://gamedev.stackexchange.com/questions/32611/what-is-the-best-way-to-handle-simultaneous-collisions-in-a-physics-engine
+#include <string>
 
-TODO:
-- visualize maxwell boltzmann distribution on the same page as particles moving - how to do that?
-- measure the energy of the system over time (to make sure the charges dont go too crazy)
-- measure momentum of the system over time
-- plot both of those for all, uncharged, and charged particles
--/ make graph automatically play
-- make a random particle generator that sets a certain momentum and total energy
+// PGPlot helpers
+void setup_plot()
+{
+    // Set up white background, line thickness and text size
+    cpgscr(0, 1.0, 1.0, 1.0); // index 0, background colour
+    cpgscr(1, .0, .0, .0);    // index 1, default fg colour
+    cpgslw(3);                // line width
+    cpgsch(1.5);              // text size
+    cpgask(0);                // no more user input
+}
+void setup_distribution_plot(int distribution_buckets, int num_total_particles)
+{
+    // Set up distribution plots
+    cpgenv(0, distribution_buckets, 0, num_total_particles, 0, 1);
+}
 
-*/
+void plot_distribution(
+    float x_axis[],
+    int distribution[],
+    int num_buckets,
+    std::string title,
+    std::string x_label,
+    std::string y_label)
+{
+    // Actually plot the distribution on the current plot device
+    cpgeras();
+    cpgsci(1);                                               // Set colour to black
+    cpgbox("BCTCN", 0, 0, "BCTCN", 0, 0);                    // Draw the box
+    cpglab(x_label.c_str(), y_label.c_str(), title.c_str()); // Redo axis labels since they were erased
+
+    for (int i = 0; i < num_buckets; i++)
+    {
+        cpgsci(i + 2);
+        cpgrect(i, i + 1, 0, distribution[i]); // Plot the number of particles
+    }
+}
 
 int main()
 {
@@ -38,11 +54,13 @@ int main()
     float sqr_bounds = 10.;
     int num_particles = 50;
     int num_charged_particles = 50;
+
     // Pgplot variables
     char input_ch;
     float input_x, input_y;
     std::chrono::steady_clock iteration_timer;
 
+    // Particle variables
     std::cout << "How many particles would you like to simulate? ";
     std::cin >> num_particles;
     std::cout << "How many charged particles would you like to simulate? ";
@@ -54,22 +72,47 @@ int main()
     int recent_collisions[num_total_particles][num_total_particles];
     RectangleContainer container = RectangleContainer(-sqr_bounds, sqr_bounds, sqr_bounds, -sqr_bounds);
 
+    // Distribution graph variables
+    int distribution_buckets = 30;
+    int speed_distribution[distribution_buckets];
+    int k_energy_distribution[distribution_buckets];
+    int e_energy_distribution[distribution_buckets];
+    float x_axis[distribution_buckets];
+
     // Step 1: Initialize the plot background
-    // Open a plot window
-    if (!cpgopen("/XWINDOW"))
+    // Open a plot window for the particles and their distributions
+    int k_energy_distribution_plot = cpgopen("/XWINDOW");
+    int speed_distribution_plot = cpgopen("/XWINDOW");
+    int particle_plot = cpgopen("/XWINDOW");
+    // int e_energy_distribution_plot = cpgopen("/XWINDOW");
+    if (!particle_plot ||
+        !speed_distribution_plot ||
+        !k_energy_distribution_plot)
+    //  ||
+    // !e_energy_distribution_plot)
+    {
+        std::cout << "Could not open plot windows\n";
         return 1;
+    }
 
-    // cpgpage();
-    // cpgsvp(0.05, 0.95, 0.05, 0.95);
-    // cpgwnad(0.0, 1.0, 0.0, 1.0);
+    // Set up backgrounds for each plot
+    cpgslct(particle_plot);
+    setup_plot();
+    cpgenv(-sqr_bounds, sqr_bounds, -sqr_bounds, sqr_bounds, 0, 1);
 
-    // Set up white background, line thickness and text size
-    cpgscr(0, 1.0, 1.0, 1.0); // index 0, background colour
-    cpgscr(1, .0, .0, .0);    // index 1, default fg colour
-    cpgslw(20);               // line width
-    cpgsch(1.5);              // text size
+    cpgslct(speed_distribution_plot);
+    setup_plot();
+    setup_distribution_plot(distribution_buckets, num_total_particles);
 
-    // Step 2: Make starting particles
+    cpgslct(k_energy_distribution_plot);
+    setup_plot();
+    setup_distribution_plot(distribution_buckets, num_total_particles);
+
+    // cpgslct(e_energy_distribution_plot);
+    // setup_plot();
+    // setup_distribution_plot(distribution_buckets, num_total_particles);
+
+    // Step 2: Make starting particles (randomly)
     for (int i = 0; i < num_particles; i++)
     {
         current_particles[i] = Particle::make_rand_particle(sqr_bounds);
@@ -89,17 +132,21 @@ int main()
     // current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-1, 0), 1, 0);
     // current_particles[1] = Particle(Vec2D(-1, 0.005), Vec2D(1, 0), 1, 0);
 
-    cpgenv(-sqr_bounds * 1.1, sqr_bounds * 1.1, -sqr_bounds * 1.1, sqr_bounds * 1.1, 0, 1);
     // Step 3: While user has not exited the program
-    char *axis_opts = "BCTSI";
+    std::string axis_opts = "BC";
     for (int counter = 0;; counter++)
     {
+        // Redraw the particle plot
+        cpgslct(particle_plot);
         cpgeras();
-        cpgbox(axis_opts, 0.0, 0, axis_opts, 0.0, 0);
+        cpgslw(3);
+        cpgsci(1);
+        cpgbox(axis_opts.c_str(), 0.0, 0, axis_opts.c_str(), 0.0, 0);
+        cpgslw(20);
 
+        // timer to make the graph update smoothly, every dt seconds
         auto iteration_timer = std::chrono::high_resolution_clock::now();
 
-        // iteration_timer = time(NULL);
         // - Step 4: Plot the particles
         std::cout << "Plotting particles: " << counter << "\n";
         for (int i = 0; i < num_total_particles; i++)
@@ -114,7 +161,6 @@ int main()
             if (num_total_particles <= 6)
                 std::cout << current_particles[i].to_string() << std::endl;
         }
-        // - Step 5: Start time delta
 
         // - Step 6: Update the positions of the particles by time delta
         for (int i = 0; i < num_total_particles; i++)
@@ -123,12 +169,16 @@ int main()
             next_particles[i] = current_particles[i].clone();
         }
 
+        // Update positions and collisions
         for (int i = 0; i < num_total_particles; i++)
         {
+
+            // Update collisions and particle-particle interactions
             Vec2D velocity_contributions_for_i = Vec2D();
             Vec2D acceleration_contributions_for_i = Vec2D();
             for (int j = 0; j < num_total_particles; j++)
             {
+
                 if (i == j)
                     continue;
                 // let charged particles sort themselves out with acceleration alone
@@ -148,7 +198,6 @@ int main()
 
             next_particles[i].velocity += velocity_contributions_for_i;
             // No acceleration lingers from previous time (use = instead of +=)? only acceleration for charged particles should be other charged particles
-            // if (next_particles[i].is_charged())
             next_particles[i].acceleration = acceleration_contributions_for_i;
             next_particles[i].velocity = container.get_collision_velocity(next_particles[i]);
 
@@ -158,11 +207,13 @@ int main()
             next_particles[i].velocity = get_next_half_velocity(v_i_half, next_particles[i].acceleration, dt);
         }
 
+        // Swap in new calculations for all particles
         for (int i = 0; i < num_total_particles; i++)
         {
             current_particles[i] = next_particles[i].clone();
         }
 
+        // Debugging table for most recent collision, only for small numbers of particles
         if (num_total_particles <= 6)
         {
             TextTable t('-', '|', '+');
@@ -184,23 +235,49 @@ int main()
             std::cout << t;
         }
 
+        // Useful output info each iteration
         std::cout << "Total speed: " << get_total_speed(current_particles, num_total_particles) << "\n";
         std::cout << "Total energy k: " << get_total_kinetic_energy(current_particles, num_total_particles) << "\n";
         std::cout << "Total energy q: " << get_total_electric_potential_energy(current_particles, num_total_particles) << "\n";
         std::cout << "Total energy: " << get_total_energy(current_particles, num_total_particles) << "\n";
 
-        // auto finish = std::chrono::high_resolution_clock::now();
-        // std::cout << std::chrono::duration_cast<std::chrono::nanoseconds>(finish - start).count() << "ns\n";
-        while (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - iteration_timer).count() < dt * 5000)
-        // time(NULL) - iteration_timer < dt / 10000.)
-        {
-            // std::cout << "Idle" << std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - iteration_timer).count() << "\n";
-            // std::this_thread::sleep_for(std::chrono::milliseconds(x * 1000 / 2));
-        }
-        // - Step 7: Wait for rest of time delta (idle loop)
-        // if (!cpgcurs(&input_x, &input_y, &input_ch))
-        //     break;
+        // Plot distributions
+        cpgslct(speed_distribution_plot);
+        get_speed_distribution(x_axis, speed_distribution, distribution_buckets, current_particles, num_total_particles);
+        plot_distribution(
+            x_axis,
+            speed_distribution,
+            distribution_buckets,
+            "Speed Distribution",
+            "Speed",
+            "Number of Particles");
 
+        cpgslct(k_energy_distribution_plot);
+        get_kinetic_energy_distribution(x_axis, k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        plot_distribution(
+            x_axis,
+            k_energy_distribution,
+            distribution_buckets,
+            "Kinetic Energy Distribution",
+            "Kinetic Energy",
+            "Number of Particles");
+
+        // cpgslct(e_energy_distribution_plot);
+        // get_electric_potential_energy_distribution(x_axis, e_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        // plot_distribution(
+        //     x_axis,
+        //     e_energy_distribution,
+        //     distribution_buckets,
+        //     "Electric Potential Energy Distribution",
+        //     "Electric Potential Energy",
+        //     "Number of Particles");
+
+        while (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - iteration_timer).count() < dt * 5000)
+        {
+            // idle
+        }
+
+        // // Old code to update only on keypress - automatic updates seem to work better though
         // // 'x' corresponds to a right click: zoom out
         // if (input_ch == 'x' || input_ch == 'X' || input_ch == 'd' || input_ch == 'D')
         // {
