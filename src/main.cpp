@@ -8,6 +8,7 @@
 #include <cmath>
 #include <chrono>
 #include <string>
+#include <vector>
 
 // PGPlot helpers
 void setup_plot()
@@ -79,15 +80,23 @@ int main()
     int e_energy_distribution[distribution_buckets];
     float x_axis[distribution_buckets];
 
+    // Energy over time
+    std::vector<float> total_speed;
+    std::vector<float> total_energy;
+    std::vector<float> total_kinetic_energy;
+    std::vector<float> total_electric_energy;
+
     // Step 1: Initialize the plot background
     // Open a plot window for the particles and their distributions
     int k_energy_distribution_plot = cpgopen("/XWINDOW");
     int speed_distribution_plot = cpgopen("/XWINDOW");
+    int energy_over_time_plot = cpgopen("/XWINDOW");
     int particle_plot = cpgopen("/XWINDOW");
     // int e_energy_distribution_plot = cpgopen("/XWINDOW");
     if (!particle_plot ||
         !speed_distribution_plot ||
-        !k_energy_distribution_plot)
+        !k_energy_distribution_plot ||
+        !energy_over_time_plot)
     //  ||
     // !e_energy_distribution_plot)
     {
@@ -107,6 +116,10 @@ int main()
     cpgslct(k_energy_distribution_plot);
     setup_plot();
     setup_distribution_plot(distribution_buckets, num_total_particles);
+
+    cpgslct(energy_over_time_plot);
+    setup_plot();
+    cpgenv(0, 1, -num_total_particles * 2, num_total_particles * 50, 0, 1); // 7000 seems good for 200 particles
 
     // cpgslct(e_energy_distribution_plot);
     // setup_plot();
@@ -184,14 +197,14 @@ int main()
                 // let charged particles sort themselves out with acceleration alone
                 if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
                 {
-                    if (recent_collisions[i][j] < counter - 1)
-                    {
-                        velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
-                    }
-                    if (current_particles[i].particles_collided(current_particles[j]))
-                    {
-                        recent_collisions[i][j] = counter;
-                    }
+                    // if (recent_collisions[i][j] < counter - 1)
+                    // {
+                    velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
+                    // }
+                    // if (current_particles[i].particles_collided(current_particles[j]))
+                    // {
+                    //     recent_collisions[i][j] = counter;
+                    // }
                 }
                 acceleration_contributions_for_i += current_particles[i].get_acceleration_contributions(current_particles[j]);
             }
@@ -236,10 +249,45 @@ int main()
         }
 
         // Useful output info each iteration
-        std::cout << "Total speed: " << get_total_speed(current_particles, num_total_particles) << "\n";
-        std::cout << "Total energy k: " << get_total_kinetic_energy(current_particles, num_total_particles) << "\n";
-        std::cout << "Total energy q: " << get_total_electric_potential_energy(current_particles, num_total_particles) << "\n";
-        std::cout << "Total energy: " << get_total_energy(current_particles, num_total_particles) << "\n";
+        total_speed.push_back(get_total(current_particles, num_total_particles, ParticleProperty::speed));
+        total_kinetic_energy.push_back(get_total(current_particles, num_total_particles, ParticleProperty::kinetic));
+        total_electric_energy.push_back(get_total(current_particles, num_total_particles, ParticleProperty::electric));
+        total_energy.push_back(get_total_energy(current_particles, num_total_particles));
+
+        std::cout << "Total speed: " << total_speed.back() << "\n";
+        std::cout << "Total energy k: " << total_kinetic_energy.back() << "\n";
+        std::cout << "Total energy q: " << total_electric_energy.back() << "\n";
+        std::cout << "Total energy: " << total_energy.back() << "\n";
+
+        // Plot energy over time
+        cpgslct(energy_over_time_plot);
+        cpgeras();
+        cpgsci(1);
+        cpgbox("BCT", 0, 0, "BCTN", 0, 0);
+        cpglab("Time", "Energy", "Energy Over Time");
+
+        if (total_speed.size() > 5000)
+        {
+            total_speed.erase(total_speed.begin());
+            total_energy.erase(total_energy.begin());
+            total_kinetic_energy.erase(total_kinetic_energy.begin());
+            total_electric_energy.erase(total_electric_energy.begin());
+        }
+
+        std::vector<float> x_axis_vec(total_speed.size());
+        for (int i = 0; i < total_speed.size(); i++)
+        {
+            x_axis_vec[i] = (float)i / (float)total_speed.size();
+        }
+
+        cpgsci(3);
+        cpgline(total_speed.size(), &x_axis_vec[0], &total_speed[0]);
+        cpgsci(4);
+        cpgline(total_energy.size(), &x_axis_vec[0], &total_energy[0]);
+        cpgsci(5);
+        cpgline(total_kinetic_energy.size(), &x_axis_vec[0], &total_kinetic_energy[0]);
+        cpgsci(6);
+        cpgline(total_electric_energy.size(), &x_axis_vec[0], &total_electric_energy[0]);
 
         // Plot distributions
         cpgslct(speed_distribution_plot);

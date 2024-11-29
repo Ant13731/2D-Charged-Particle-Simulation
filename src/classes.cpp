@@ -54,39 +54,44 @@ Vec2D Vec2D::normalize() const
 }
 
 // Particle constructors and methods
-Particle::Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge)
-    : position(position), velocity(velocity), acceleration(acceleration), mass(mass), charge(charge) {}
-Particle::Particle(Vec2D position, Vec2D velocity, float mass, float charge)
-    : position(position), velocity(velocity), acceleration(Vec2D()), mass(mass), charge(charge) {}
+Particle::Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge, float radius)
+    : position(position), velocity(velocity), acceleration(acceleration), mass(mass), charge(charge), radius(radius) {}
+Particle::Particle(Vec2D position, Vec2D velocity, float mass, float charge, float radius)
+    : position(position), velocity(velocity), acceleration(Vec2D()), mass(mass), charge(charge), radius(radius) {}
 Particle::Particle()
-    : position(Vec2D()), velocity(Vec2D()), acceleration(Vec2D()), mass(0), charge(0) {}
+    : position(Vec2D()), velocity(Vec2D()), acceleration(Vec2D()), mass(0), charge(0), radius(0.25) {}
 
 Particle Particle::clone()
 {
-    return Particle(position, velocity, acceleration, mass, charge);
+    return Particle(position, velocity, acceleration, mass, charge, radius);
 }
 
 bool Particle::particles_collided(Particle &other)
 {
-    return (position - other.position).length() < 0.5;
+    float collision_radius = radius + other.radius;
+    return (position - other.position).length() < collision_radius;
     // return (position - other.position).length() < 0.1;
 }
-
-bool Particle::particles_facing_each_other(Particle &other)
+bool Particle::is_moving_apart(Particle &other)
 {
-    // Unused - was testing to ensure the velocity updates were working correctly
-    // This idea didn't really work though
-    return (velocity - other.velocity).dot(position - other.position) < 0;
+    return (velocity - other.velocity).dot(position - other.position) > 0;
 }
+
+// bool Particle::particles_facing_each_other(Particle &other)
+// {
+//     // Unused - was testing to ensure the velocity updates were working correctly
+//     // This idea didn't really work though
+//     return (velocity - other.velocity).dot(position - other.position) < 0;
+// }
 
 Vec2D Particle::get_velocity_contributions(Particle &other)
 {
-    if (!particles_collided(other))
+    if (!particles_collided(other) || is_moving_apart(other))
     {
         return Vec2D();
     }
 
-    std::cout << "Particles collided\n";
+    // std::cout << "Particles collided\n";
 
     // 2D elastic collision
     float mass_coefficient = (other.mass * 2) / (other.mass + mass);
@@ -105,11 +110,24 @@ Vec2D Particle::get_acceleration_contributions(Particle &other)
         return Vec2D();
     }
 
-    float distance = std::pow((position - other.position).length(), 2);
-    float k = 8.99e9;
-    return (position - other.position) * k * charge * other.charge / (distance * mass) * 1e-9;
+    float distance = std::pow((position - other.position).length(), 2.) + acceleration_epsilon;
+    return (position - other.position) * k * charge * other.charge / (distance * mass);
 }
 bool Particle::is_charged() { return !(charge < 0.000001 && charge > -0.000001); }
+
+float Particle::get_speed() { return std::abs(velocity.length()); }
+float Particle::get_kinetic_energy() { return 0.5 * mass * std::pow(get_speed(), 2); }
+float Particle::get_electric_potential_energy(Particle &other)
+{
+    if (!is_charged() || !other.is_charged())
+    {
+        return 0;
+    }
+
+    float epsilon = std::pow(0.0001, 2.);
+    float distance = std::pow(std::sqrt((position - other.position).length() + epsilon), 2.);
+    return k * charge * other.charge / distance;
+}
 
 Particle Particle::make_rand_particle(float sqr_bounds)
 {
@@ -124,7 +142,7 @@ Particle Particle::make_rand_particle(float sqr_bounds)
     // float mass = std::abs(dist(mt));
     float mass = 1.;
 
-    return Particle(position, velocity, mass, 0.f);
+    return Particle(position, velocity, mass, 0.f, 0.25);
 }
 Particle Particle::make_rand_charged_particle(float sqr_bounds)
 {
@@ -144,7 +162,7 @@ Particle Particle::make_rand_charged_particle(float sqr_bounds)
     float charge = (x >= 0) ? 1. : -1.;
     // float charge = dist(mt);
 
-    return Particle(position, velocity, acceleration, mass, charge);
+    return Particle(position, velocity, acceleration, mass, charge, 0.25);
 }
 std::string Particle::to_string()
 {

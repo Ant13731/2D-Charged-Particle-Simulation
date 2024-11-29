@@ -31,8 +31,12 @@ public:
     float mass;
     float charge;
 
-    Particle(Vec2D position, Vec2D velocity, float mass, float charge);
-    Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge);
+    float radius; // Used for collision detection
+    static constexpr float k = 1;
+    static constexpr float acceleration_epsilon = 1e-6;
+
+    Particle(Vec2D position, Vec2D velocity, float mass, float charge, float radius);
+    Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge, float radius);
 
     Particle();
     static Particle make_rand_particle(float sqr_bounds);
@@ -40,7 +44,13 @@ public:
     Particle clone();
 
     bool particles_collided(Particle &other);
-    bool particles_facing_each_other(Particle &other);
+    bool is_moving_apart(Particle &other);
+
+    float get_speed();
+    float get_kinetic_energy();
+    float get_electric_potential_energy(Particle &other);
+
+    // bool particles_facing_each_other(Particle &other);
     Vec2D get_velocity_contributions(Particle &other);
     Vec2D get_acceleration_contributions(Particle &other);
     bool is_charged();
