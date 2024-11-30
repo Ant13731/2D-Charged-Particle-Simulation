@@ -55,15 +55,20 @@ float get_total(Particle current_particles[], int num_particles, ParticlePropert
     {
         for (int i = 0; i < num_particles; i++)
         {
-            for (int j = i; j < num_particles; j++)
+            for (int j = 0; j < num_particles; j++)
             {
                 if (i == j)
                     continue;
 
-                total += current_particles[i].get_electric_potential_energy(current_particles[j]);
+                total += current_particles[i].charge * current_particles[j].charge / std::abs((current_particles[i].position - current_particles[j].position).length() + Particle::acceleration_epsilon);
+
+                // std::cout << "Calculating electric potential energy between particles " << i << " and " << j << ": " << current_particles[i].get_electric_potential_energy(current_particles[j]) << std::endl;
+
+                // total += current_particles[i].get_electric_potential_energy(current_particles[j]) / current_particles[i].k;
             }
         }
-        return total;
+        // return Particle::k * total * 2.f;
+        return Particle::k * total * 0.5f;
     }
 
     for (int i = 0; i < num_particles; i++)

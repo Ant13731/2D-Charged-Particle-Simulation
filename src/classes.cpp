@@ -52,6 +52,11 @@ Vec2D Vec2D::normalize() const
 {
     return *this / length();
 }
+void Vec2D::zero()
+{
+    x = 0;
+    y = 0;
+}
 
 // Particle constructors and methods
 Particle::Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge, float radius)
@@ -124,7 +129,7 @@ float Particle::get_electric_potential_energy(Particle &other)
         return 0;
     }
 
-    float distance = std::pow((position - other.position).length(), 2.) + acceleration_epsilon;
+    float distance = std::pow((position - other.position).length(), 1.) + acceleration_epsilon;
     return k * charge * other.charge / distance;
 }
 

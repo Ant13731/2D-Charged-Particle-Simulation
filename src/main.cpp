@@ -9,6 +9,7 @@
 #include <chrono>
 #include <string>
 #include <vector>
+#include "configurations.h"
 
 // PGPlot helpers
 void setup_plot()
@@ -23,7 +24,7 @@ void setup_plot()
 void setup_distribution_plot(int distribution_buckets, int num_total_particles)
 {
     // Set up distribution plots
-    cpgenv(0, distribution_buckets, 0, num_total_particles / 3, 0, 1);
+    cpgenv(0, distribution_buckets, 0, std::max(5, num_total_particles / 3), 0, 1);
 }
 
 void plot_distribution(
@@ -52,32 +53,77 @@ int main()
     // Configuration
     float dt = 0.01;
     float sqr_bounds = 10.;
-    int num_particles = 50;
-    int num_charged_particles = 50;
+    // int num_particles = 50;
+    // int num_charged_particles = 50;
 
     // Pgplot variables
     char input_ch;
     float input_x, input_y;
     std::chrono::steady_clock iteration_timer;
 
-    // Particle variables
-    std::cout << "How many particles would you like to simulate? ";
-    std::cin >> num_particles;
-    std::cout << "How many charged particles would you like to simulate? ";
-    std::cin >> num_charged_particles;
-
-    int num_total_particles = num_particles + num_charged_particles;
-    Particle current_particles[num_total_particles];
-    Particle next_particles[num_total_particles];
-    // int recent_collisions[num_total_particles][num_total_particles];
     RectangleContainer container = RectangleContainer(-sqr_bounds, sqr_bounds, sqr_bounds, -sqr_bounds);
+
+    int num_total_particles;
+    Particle *current_particles;
+
+    int configuration_choice;
+    std::cout << "Choose a configuration:\n"
+              << "1. Random configuration\n"
+              << "2. 2 uncharged particles in 1D\n"
+              << "3. 2 uncharged particles in 2D\n"
+              << "4. 2 charged particles in 1D with same charge\n"
+              << "5. 2 charged particles in 1D with opposite charge\n"
+              << "6. 2 charged particles in orbit\n"
+              << "7. Charged particles in a circle\n"
+              << "8. Charged particles in a circle with no velocity\n"
+              << "9. Atom\n";
+
+    std::cin >> configuration_choice;
+    switch (configuration_choice)
+    {
+    case 1:
+        current_particles = random_configuration(sqr_bounds, num_total_particles);
+        break;
+    case 2:
+        current_particles = uncharged_2_points_1D(num_total_particles);
+        break;
+    case 3:
+        current_particles = uncharged_2_points_2D(num_total_particles);
+        break;
+    case 4:
+        current_particles = charged_2_points_1D_same_charge(num_total_particles);
+        break;
+    case 5:
+        current_particles = charged_2_points_1D_opposite_charge(num_total_particles);
+        break;
+    case 6:
+        current_particles = charged_2_points_orbit(num_total_particles);
+        break;
+    case 7:
+        current_particles = charged_points_in_circle(num_total_particles);
+        break;
+    case 8:
+        current_particles = charged_points_in_circle_no_velocity(num_total_particles);
+        break;
+    case 9:
+        current_particles = atom(num_total_particles);
+        break;
+    default:
+        std::cout << "Invalid choice\n";
+        return 1;
+    }
+
+    // int num_total_particles = num_particles + num_charged_particles;
+    // Particle next_particles[num_total_particles];
+    // int recent_collisions[num_total_particles][num_total_particles];
+
+    // float x_axis[distribution_buckets];
 
     // Distribution graph variables
     int distribution_buckets = 30;
     int speed_distribution[distribution_buckets];
     int k_energy_distribution[distribution_buckets];
     int e_energy_distribution[distribution_buckets];
-    // float x_axis[distribution_buckets];
 
     // Energy over time
     std::vector<float> total_speed;
@@ -87,14 +133,14 @@ int main()
 
     // Step 1: Initialize the plot background
     // Open a plot window for the particles and their distributions
-    int k_energy_distribution_plot = cpgopen("/XWINDOW");
+    // int k_energy_distribution_plot = cpgopen("/XWINDOW");
     int speed_distribution_plot = cpgopen("/XWINDOW");
     int energy_over_time_plot = cpgopen("/XWINDOW");
     int particle_plot = cpgopen("/XWINDOW");
     // int e_energy_distribution_plot = cpgopen("/XWINDOW");
     if (!particle_plot ||
         !speed_distribution_plot ||
-        !k_energy_distribution_plot ||
+        // !k_energy_distribution_plot ||
         !energy_over_time_plot)
     //  ||
     // !e_energy_distribution_plot)
@@ -112,27 +158,33 @@ int main()
     setup_plot();
     setup_distribution_plot(distribution_buckets, num_total_particles);
 
-    cpgslct(k_energy_distribution_plot);
-    setup_plot();
-    setup_distribution_plot(distribution_buckets, num_total_particles);
+    // cpgslct(k_energy_distribution_plot);
+    // setup_plot();
+    // setup_distribution_plot(distribution_buckets, num_total_particles);
 
     cpgslct(energy_over_time_plot);
     setup_plot();
     cpgenv(0, 1, -num_total_particles * 2, num_total_particles * 50, 0, 1); // 7000 seems good for 200 particles
+
+    // Particle variables
+    // std::cout << "How many particles would you like to simulate? ";
+    // std::cin >> num_particles;
+    // std::cout << "How many charged particles would you like to simulate? ";
+    // std::cin >> num_charged_particles;
 
     // cpgslct(e_energy_distribution_plot);
     // setup_plot();
     // setup_distribution_plot(distribution_buckets, num_total_particles);
 
     // Step 2: Make starting particles (randomly)
-    for (int i = 0; i < num_particles; i++)
-    {
-        current_particles[i] = Particle::make_rand_particle(sqr_bounds);
-    }
-    for (int i = num_particles; i < num_total_particles; i++)
-    {
-        current_particles[i] = Particle::make_rand_charged_particle(sqr_bounds);
-    }
+    // for (int i = 0; i < num_particles; i++)
+    // {
+    //     current_particles[i] = Particle::make_rand_particle(sqr_bounds);
+    // }
+    // for (int i = num_particles; i < num_total_particles; i++)
+    // {
+    //     current_particles[i] = Particle::make_rand_charged_particle(sqr_bounds);
+    // }
     // for (int i = 0; i < num_total_particles; i++)
     // {
     //     for (int j = 0; j < num_total_particles; j++)
@@ -170,7 +222,7 @@ int main()
             else
                 cpgsci(4);
             cpgpt1(current_particles[i].position.x, current_particles[i].position.y, -1);
-            if (num_total_particles <= 6)
+            if (num_total_particles <= 6 && configuration_choice == 1)
                 std::cout << current_particles[i].to_string() << std::endl;
         }
 
@@ -233,12 +285,12 @@ int main()
                 if (i == j)
                     continue;
 
-                if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
-                {
-                    Vec2D temp = current_particles[i].get_velocity_contributions(current_particles[j]);
-                    current_particles[j].velocity += current_particles[j].get_velocity_contributions(current_particles[i]);
-                    current_particles[i].velocity += temp;
-                }
+                // if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
+                // {
+                Vec2D temp = current_particles[i].get_velocity_contributions(current_particles[j]);
+                current_particles[j].velocity += current_particles[j].get_velocity_contributions(current_particles[i]);
+                current_particles[i].velocity += temp;
+                // }
 
                 // current_particles[i].acceleration += current_particles[i].get_acceleration_contributions(current_particles[j]);
                 // current_particles[j].acceleration += current_particles[j].get_acceleration_contributions(current_particles[i]);
@@ -276,7 +328,7 @@ int main()
 
         for (int i = 0; i < num_total_particles; i++)
         {
-            current_particles[i].acceleration = Vec2D();
+            current_particles[i].acceleration.zero();
         }
 
         for (int i = 0; i < num_total_particles; i++)
@@ -328,8 +380,8 @@ int main()
         total_electric_energy.push_back(get_total(current_particles, num_total_particles, ParticleProperty::electric));
         total_energy.push_back(get_total_energy(current_particles, num_total_particles));
 
-        delta_k -= total_kinetic_energy.back();
-        delta_u -= total_electric_energy.back();
+        delta_k = total_kinetic_energy.back() - delta_k;
+        delta_u = total_electric_energy.back() - delta_u;
 
         std::cout << "Total speed: " << total_speed.back() << "\n";
         std::cout << "Total energy k: " << total_kinetic_energy.back() << "\n";
@@ -381,16 +433,16 @@ int main()
             "Speed",
             "Number of Particles");
 
-        cpgslct(k_energy_distribution_plot);
-        get_kinetic_energy_distribution(k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
-        // get_kinetic_energy_distribution(x_axis, k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
-        plot_distribution(
-            // x_axis,
-            k_energy_distribution,
-            distribution_buckets,
-            "Kinetic Energy Distribution",
-            "Kinetic Energy",
-            "Number of Particles");
+        // cpgslct(k_energy_distribution_plot);
+        // get_kinetic_energy_distribution(k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        // // get_kinetic_energy_distribution(x_axis, k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        // plot_distribution(
+        //     // x_axis,
+        //     k_energy_distribution,
+        //     distribution_buckets,
+        //     "Kinetic Energy Distribution",
+        //     "Kinetic Energy",
+        //     "Number of Particles");
 
         // cpgslct(e_energy_distribution_plot);
         // get_electric_potential_energy_distribution(x_axis, e_energy_distribution, distribution_buckets, current_particles, num_total_particles);
@@ -425,4 +477,5 @@ int main()
         //     // std::this_thread::sleep_for(std::chrono::milliseconds(x * 1000 / 2));
         // }
     }
+    delete[] current_particles;
 }

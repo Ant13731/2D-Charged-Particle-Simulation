@@ -20,6 +20,7 @@ public:
     float length() const;
     Vec2D perpendicular() const;
     Vec2D normalize() const;
+    void zero();
 };
 
 class Particle
