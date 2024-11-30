@@ -55,7 +55,7 @@ float get_total(Particle current_particles[], int num_particles, ParticlePropert
     {
         for (int i = 0; i < num_particles; i++)
         {
-            for (int j = 0; j < num_particles; j++)
+            for (int j = i; j < num_particles; j++)
             {
                 if (i == j)
                     continue;
@@ -214,7 +214,8 @@ float get_total_energy(Particle current_particles[], int num_particles)
     // return get_total_kinetic_energy(current_particles, num_particles) + get_total_electric_potential_energy(current_particles, num_particles);
 }
 
-void get_speed_distribution(float x_axis[], int maxwell_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// void get_speed_distribution(float x_axis[], int maxwell_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+void get_speed_distribution(int maxwell_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
     // float max_speed = get_total_speed(current_particles, num_particles) / 30.;
     // Choosing a static value seems to work best for visualization
@@ -229,7 +230,7 @@ void get_speed_distribution(float x_axis[], int maxwell_distribution[], int num_
     for (int i = 0; i < num_buckets; i++)
     {
         maxwell_distribution[i] = 0;
-        x_axis[i] = min_speed + i * bucket_size;
+        // x_axis[i] = min_speed + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)
@@ -239,7 +240,8 @@ void get_speed_distribution(float x_axis[], int maxwell_distribution[], int num_
     }
 }
 
-void get_kinetic_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// void get_kinetic_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+void get_kinetic_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
     float max_energy = get_total_energy(current_particles, num_particles) / 30.;
     // float max_energy = get_max_kinetic_energy(current_particles, num_particles);
@@ -251,7 +253,7 @@ void get_kinetic_energy_distribution(float x_axis[], int energy_distribution[], 
     for (int i = 0; i < num_buckets; i++)
     {
         energy_distribution[i] = 0;
-        x_axis[i] = min_energy + i * bucket_size;
+        // x_axis[i] = min_energy + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)
@@ -261,7 +263,8 @@ void get_kinetic_energy_distribution(float x_axis[], int energy_distribution[], 
     }
 }
 
-void get_electric_potential_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// void get_electric_potential_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+void get_electric_potential_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
     float max_energy = 100.;
     // get_total_energy(current_particles, num_particles) / 10.;
@@ -274,7 +277,7 @@ void get_electric_potential_energy_distribution(float x_axis[], int energy_distr
     for (int i = 0; i < num_buckets; i++)
     {
         energy_distribution[i] = 0;
-        x_axis[i] = min_energy + i * bucket_size;
+        // x_axis[i] = min_energy + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)

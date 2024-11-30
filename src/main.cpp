@@ -23,11 +23,10 @@ void setup_plot()
 void setup_distribution_plot(int distribution_buckets, int num_total_particles)
 {
     // Set up distribution plots
-    cpgenv(0, distribution_buckets, 0, num_total_particles, 0, 1);
+    cpgenv(0, distribution_buckets, 0, num_total_particles / 3, 0, 1);
 }
 
 void plot_distribution(
-    float x_axis[],
     int distribution[],
     int num_buckets,
     std::string title,
@@ -70,7 +69,7 @@ int main()
     int num_total_particles = num_particles + num_charged_particles;
     Particle current_particles[num_total_particles];
     Particle next_particles[num_total_particles];
-    int recent_collisions[num_total_particles][num_total_particles];
+    // int recent_collisions[num_total_particles][num_total_particles];
     RectangleContainer container = RectangleContainer(-sqr_bounds, sqr_bounds, sqr_bounds, -sqr_bounds);
 
     // Distribution graph variables
@@ -78,7 +77,7 @@ int main()
     int speed_distribution[distribution_buckets];
     int k_energy_distribution[distribution_buckets];
     int e_energy_distribution[distribution_buckets];
-    float x_axis[distribution_buckets];
+    // float x_axis[distribution_buckets];
 
     // Energy over time
     std::vector<float> total_speed;
@@ -134,13 +133,13 @@ int main()
     {
         current_particles[i] = Particle::make_rand_charged_particle(sqr_bounds);
     }
-    for (int i = 0; i < num_total_particles; i++)
-    {
-        for (int j = 0; j < num_total_particles; j++)
-        {
-            recent_collisions[i][j] = 0;
-        }
-    }
+    // for (int i = 0; i < num_total_particles; i++)
+    // {
+    //     for (int j = 0; j < num_total_particles; j++)
+    //     {
+    //         recent_collisions[i][j] = 0;
+    //     }
+    // }
 
     // current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-1, 0), 1, 0);
     // current_particles[1] = Particle(Vec2D(-1, 0.005), Vec2D(1, 0), 1, 0);
@@ -176,77 +175,152 @@ int main()
         }
 
         // - Step 6: Update the positions of the particles by time delta
-        for (int i = 0; i < num_total_particles; i++)
-        {
-            // TODO dont use clone, just make 2 sets of objects and continually update
-            next_particles[i] = current_particles[i].clone();
-        }
+        // for (int i = 0; i < num_total_particles; i++)
+        // {
+        //     // TODO dont use clone, just make 2 sets of objects and continually update
+        //     next_particles[i] = current_particles[i].clone();
+        // }
 
         // Update positions and collisions
+        // for (int i = 0; i < num_total_particles; i++)
+        // {
+
+        //     // Update collisions and particle-particle interactions
+        //     Vec2D velocity_contributions_for_i = Vec2D();
+        //     Vec2D acceleration_contributions_for_i = Vec2D();
+        //     for (int j = 0; j < num_total_particles; j++)
+        //     {
+
+        //         if (i == j)
+        //             continue;
+        //         // let charged particles sort themselves out with acceleration alone
+        //         if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
+        //         {
+        //             // if (recent_collisions[i][j] < counter - 1)
+        //             // {
+        //             velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
+        //             // }
+        //             // if (current_particles[i].particles_collided(current_particles[j]))
+        //             // {
+        //             //     recent_collisions[i][j] = counter;
+        //             // }
+        //         }
+        //         acceleration_contributions_for_i += current_particles[i].get_acceleration_contributions(current_particles[j]);
+        //     }
+
+        //     next_particles[i].velocity += velocity_contributions_for_i;
+        //     // No acceleration lingers from previous time (use = instead of +=)? only acceleration for charged particles should be other charged particles
+        //     next_particles[i].acceleration = acceleration_contributions_for_i;
+        //     next_particles[i].velocity = container.get_collision_velocity(next_particles[i]);
+
+        //     Vec2D v_i_half = get_next_half_velocity(next_particles[i].velocity, next_particles[i].acceleration, dt);
+        //     next_particles[i].position = get_next_position(next_particles[i].position, v_i_half, dt);
+        //     // Should this acceleration be the next term in the series? It should be according to leapfrog
+        //     next_particles[i].velocity = get_next_half_velocity(v_i_half, next_particles[i].acceleration, dt);
+        // }
+
+        // Swap in new calculations for all particles
+        // for (int i = 0; i < num_total_particles; i++)
+        // {
+        //     current_particles[i] = next_particles[i].clone();
+        // }
+
         for (int i = 0; i < num_total_particles; i++)
         {
-
-            // Update collisions and particle-particle interactions
-            Vec2D velocity_contributions_for_i = Vec2D();
-            Vec2D acceleration_contributions_for_i = Vec2D();
-            for (int j = 0; j < num_total_particles; j++)
+            for (int j = i; j < num_total_particles; j++)
             {
 
                 if (i == j)
                     continue;
-                // let charged particles sort themselves out with acceleration alone
+
                 if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
                 {
-                    // if (recent_collisions[i][j] < counter - 1)
-                    // {
-                    velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
-                    // }
-                    // if (current_particles[i].particles_collided(current_particles[j]))
-                    // {
-                    //     recent_collisions[i][j] = counter;
-                    // }
+                    Vec2D temp = current_particles[i].get_velocity_contributions(current_particles[j]);
+                    current_particles[j].velocity += current_particles[j].get_velocity_contributions(current_particles[i]);
+                    current_particles[i].velocity += temp;
                 }
-                acceleration_contributions_for_i += current_particles[i].get_acceleration_contributions(current_particles[j]);
+
+                // current_particles[i].acceleration += current_particles[i].get_acceleration_contributions(current_particles[j]);
+                // current_particles[j].acceleration += current_particles[j].get_acceleration_contributions(current_particles[i]);
             }
 
-            next_particles[i].velocity += velocity_contributions_for_i;
+            // Update collisions and particle-particle interactions
+            // Vec2D velocity_contributions_for_i = Vec2D();
+            // Vec2D acceleration_contributions_for_i = Vec2D();
+            // for (int j = 0; j < num_total_particles; j++)
+            // {
+
+            //     if (i == j)
+            //         continue;
+            //     // let charged particles sort themselves out with acceleration alone
+            //     if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
+            //     {
+            //         // if (recent_collisions[i][j] < counter - 1)
+            //         // {
+            //         velocity_contributions_for_i += current_particles[i].get_velocity_contributions(current_particles[j]);
+            //         // }
+            //         // if (current_particles[i].particles_collided(current_particles[j]))
+            //         // {
+            //         //     recent_collisions[i][j] = counter;
+            //         // }
+            //     }
+            //     acceleration_contributions_for_i += current_particles[i].get_acceleration_contributions(current_particles[j]);
+            // }
+
+            // next_particles[i].velocity += velocity_contributions_for_i;
             // No acceleration lingers from previous time (use = instead of +=)? only acceleration for charged particles should be other charged particles
-            next_particles[i].acceleration = acceleration_contributions_for_i;
-            next_particles[i].velocity = container.get_collision_velocity(next_particles[i]);
-
-            Vec2D v_i_half = get_next_half_velocity(next_particles[i].velocity, next_particles[i].acceleration, dt);
-            next_particles[i].position = get_next_position(next_particles[i].position, v_i_half, dt);
-            // Should this acceleration be the next term in the series? It should be according to leapfrog
-            next_particles[i].velocity = get_next_half_velocity(v_i_half, next_particles[i].acceleration, dt);
+            // next_particles[i].acceleration = acceleration_contributions_for_i;
         }
+        for (int i = 0; i < num_total_particles; i++)
+            current_particles[i].velocity = container.get_collision_velocity(current_particles[i]);
 
-        // Swap in new calculations for all particles
         for (int i = 0; i < num_total_particles; i++)
         {
-            current_particles[i] = next_particles[i].clone();
+            current_particles[i].acceleration = Vec2D();
+        }
+
+        for (int i = 0; i < num_total_particles; i++)
+        {
+            for (int j = 0; j < num_total_particles; j++)
+            {
+                if (i == j)
+                    continue;
+                current_particles[i].acceleration += current_particles[i].get_acceleration_contributions(current_particles[j]);
+            }
+        }
+
+        for (int i = 0; i < num_total_particles; i++)
+        {
+            Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            current_particles[i].position = get_next_position(current_particles[i].position, v_i_half, dt);
+            // Should this acceleration be the next term in the series? It should be according to leapfrog
+            current_particles[i].velocity = get_next_half_velocity(v_i_half, current_particles[i].acceleration, dt);
         }
 
         // Debugging table for most recent collision, only for small numbers of particles
-        if (num_total_particles <= 6)
-        {
-            TextTable t('-', '|', '+');
-            t.add("");
-            for (int i = 0; i < num_total_particles; i++)
-            {
-                t.add("Particle " + std::to_string(i));
-            }
-            t.endOfRow();
-            for (int i = 0; i < num_total_particles; i++)
-            {
-                t.add("Particle " + std::to_string(i));
-                for (int j = 0; j < num_total_particles; j++)
-                {
-                    t.add(std::to_string(recent_collisions[i][j]));
-                }
-                t.endOfRow();
-            }
-            std::cout << t;
-        }
+        // if (num_total_particles <= 6)
+        // {
+        //     TextTable t('-', '|', '+');
+        //     t.add("");
+        //     for (int i = 0; i < num_total_particles; i++)
+        //     {
+        //         t.add("Particle " + std::to_string(i));
+        //     }
+        //     t.endOfRow();
+        //     for (int i = 0; i < num_total_particles; i++)
+        //     {
+        //         t.add("Particle " + std::to_string(i));
+        //         for (int j = 0; j < num_total_particles; j++)
+        //         {
+        //             t.add(std::to_string(recent_collisions[i][j]));
+        //         }
+        //         t.endOfRow();
+        //     }
+        //     std::cout << t;
+        // }
+
+        float delta_k = counter == 0 ? 0.f : total_kinetic_energy.back();
+        float delta_u = counter == 0 ? 0.f : total_electric_energy.back();
 
         // Useful output info each iteration
         total_speed.push_back(get_total(current_particles, num_total_particles, ParticleProperty::speed));
@@ -254,10 +328,16 @@ int main()
         total_electric_energy.push_back(get_total(current_particles, num_total_particles, ParticleProperty::electric));
         total_energy.push_back(get_total_energy(current_particles, num_total_particles));
 
+        delta_k -= total_kinetic_energy.back();
+        delta_u -= total_electric_energy.back();
+
         std::cout << "Total speed: " << total_speed.back() << "\n";
         std::cout << "Total energy k: " << total_kinetic_energy.back() << "\n";
         std::cout << "Total energy q: " << total_electric_energy.back() << "\n";
         std::cout << "Total energy: " << total_energy.back() << "\n";
+        std::cout << "Delta k: " << delta_k << "\n";
+        std::cout << "Delta u: " << delta_u << "\n";
+        // std::cout << "t:q ratio: " << (total_energy.back() - total_kinetic_energy.back()) / total_electric_energy.back() << "\n";
 
         // Plot energy over time
         cpgslct(energy_over_time_plot);
@@ -282,7 +362,7 @@ int main()
 
         cpgsci(3);
         cpgline(total_speed.size(), &x_axis_vec[0], &total_speed[0]);
-        cpgsci(4);
+        cpgsci(1);
         cpgline(total_energy.size(), &x_axis_vec[0], &total_energy[0]);
         cpgsci(5);
         cpgline(total_kinetic_energy.size(), &x_axis_vec[0], &total_kinetic_energy[0]);
@@ -291,9 +371,10 @@ int main()
 
         // Plot distributions
         cpgslct(speed_distribution_plot);
-        get_speed_distribution(x_axis, speed_distribution, distribution_buckets, current_particles, num_total_particles);
+        get_speed_distribution(speed_distribution, distribution_buckets, current_particles, num_total_particles);
+        // get_speed_distribution(x_axis, speed_distribution, distribution_buckets, current_particles, num_total_particles);
         plot_distribution(
-            x_axis,
+            // x_axis,
             speed_distribution,
             distribution_buckets,
             "Speed Distribution",
@@ -301,9 +382,10 @@ int main()
             "Number of Particles");
 
         cpgslct(k_energy_distribution_plot);
-        get_kinetic_energy_distribution(x_axis, k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        get_kinetic_energy_distribution(k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
+        // get_kinetic_energy_distribution(x_axis, k_energy_distribution, distribution_buckets, current_particles, num_total_particles);
         plot_distribution(
-            x_axis,
+            // x_axis,
             k_energy_distribution,
             distribution_buckets,
             "Kinetic Energy Distribution",

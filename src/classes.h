@@ -32,8 +32,8 @@ public:
     float charge;
 
     float radius; // Used for collision detection
-    static constexpr float k = 1;
-    static constexpr float acceleration_epsilon = 1e-6;
+    static constexpr float k = 5;
+    static constexpr float acceleration_epsilon = 1e-2;
 
     Particle(Vec2D position, Vec2D velocity, float mass, float charge, float radius);
     Particle(Vec2D position, Vec2D velocity, Vec2D acceleration, float mass, float charge, float radius);

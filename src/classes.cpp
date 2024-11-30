@@ -124,8 +124,7 @@ float Particle::get_electric_potential_energy(Particle &other)
         return 0;
     }
 
-    float epsilon = std::pow(0.0001, 2.);
-    float distance = std::pow(std::sqrt((position - other.position).length() + epsilon), 2.);
+    float distance = std::pow((position - other.position).length(), 2.) + acceleration_epsilon;
     return k * charge * other.charge / distance;
 }
 
