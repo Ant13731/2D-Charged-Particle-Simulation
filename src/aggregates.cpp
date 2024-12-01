@@ -89,153 +89,23 @@ float get_total(Particle current_particles[], int num_particles, ParticlePropert
     return total;
 }
 
-// float get_min_speed(Particle current_particles[], int num_particles)
-// {
-//     float min_speed = 1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         if (std::abs(current_particles[i].velocity.length()) < min_speed)
-//         {
-//             min_speed = std::abs(current_particles[i].velocity.length());
-//         }
-//     }
-//     return min_speed;
-// }
-// float get_max_speed(Particle current_particles[], int num_particles)
-// {
-//     float max_speed = -1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         if (std::abs(current_particles[i].velocity.length()) > max_speed)
-//         {
-//             max_speed = std::abs(current_particles[i].velocity.length());
-//         }
-//     }
-//     return max_speed;
-// }
-
-// float get_total_speed(Particle current_particles[], int num_particles)
-// {
-//     float total_speed = 0;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         total_speed += std::abs(current_particles[i].velocity.length());
-//     }
-//     return total_speed;
-// }
-
-// float get_min_kinetic_energy(Particle current_particles[], int num_particles)
-// {
-//     float min_energy = 1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         float energy = 0.5 * current_particles[i].mass * std::pow(current_particles[i].velocity.length(), 2);
-//         if (energy < min_energy)
-//         {
-//             min_energy = energy;
-//         }
-//     }
-//     return min_energy;
-// }
-// float get_max_kinetic_energy(Particle current_particles[], int num_particles)
-// {
-//     float max_energy = -1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         float energy = 0.5 * current_particles[i].mass * std::pow(current_particles[i].velocity.length(), 2);
-//         if (energy > max_energy)
-//         {
-//             max_energy = energy;
-//         }
-//     }
-//     return max_energy;
-// }
-// float get_total_kinetic_energy(Particle current_particles[], int num_particles)
-// {
-//     float total_energy = 0;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         total_energy += 0.5 * current_particles[i].mass * std::pow(current_particles[i].velocity.length(), 2);
-//     }
-//     return total_energy;
-// }
-
-// Doesnt make sense to have a min/max of these
-// float get_min_electric_potential_energy(Particle current_particles[], int num_particles)
-// {
-//     float min_energy = 1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         if (!current_particles[i].is_charged())
-//             continue;
-
-//         float distance = (current_particles[i].position - Vec2D()).length();
-//         float electric_potential_constant = 8.99e9;
-//         float energy = electric_potential_constant * current_particles[i].charge / distance;
-//         if (energy < min_energy)
-//         {
-//             min_energy = energy;
-//         }
-//     }
-//     return min_energy * 1e-9;
-// }
-// float get_max_electric_potential_energy(Particle current_particles[], int num_particles)
-// {
-//     float max_energy = -1e9;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         if (!current_particles[i].is_charged())
-//             continue;
-
-//         float distance = (current_particles[i].position - Vec2D()).length();
-//         float electric_potential_constant = 8.99e9;
-//         float energy = electric_potential_constant * current_particles[i].charge / distance;
-//         if (energy > max_energy)
-//         {
-//             max_energy = energy;
-//         }
-//     }
-//     return max_energy * 1e-9;
-// }
-// float get_total_electric_potential_energy(Particle current_particles[], int num_particles)
-// {
-//     float total_energy = 0;
-//     for (int i = 0; i < num_particles; i++)
-//     {
-//         if (!current_particles[i].is_charged())
-//             continue;
-
-//         float distance = (current_particles[i].position - Vec2D()).length();
-//         float electric_potential_constant = 8.99e9;
-//         total_energy += electric_potential_constant * current_particles[i].charge / distance;
-//         // total_energy += k * current_particles[i].charge * current_particles[j].charge / distance;
-//     }
-//     return total_energy * 1e-9;
-// }
-
 float get_total_energy(Particle current_particles[], int num_particles)
 {
     return get_total(current_particles, num_particles, kinetic) + get_total(current_particles, num_particles, electric);
-    // return get_total_kinetic_energy(current_particles, num_particles) + get_total_electric_potential_energy(current_particles, num_particles);
 }
 
-// void get_speed_distribution(float x_axis[], int maxwell_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 void get_speed_distribution(int maxwell_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
-    // float max_speed = get_total_speed(current_particles, num_particles) / 30.;
     // Choosing a static value seems to work best for visualization
     // Updating it dynamically had risks (ie., if the max speed changes due to a bug or max speed > 1000 since there are hundreds of particles)
     float max_speed = 30.;
-    // float max_speed = get_max_speed(current_particles, num_particles);
     float min_speed = 0.;
-    // float min_speed = get_min_speed(current_particles, num_particles);
     float speed_range = max_speed - min_speed;
     float bucket_size = speed_range / num_buckets;
 
     for (int i = 0; i < num_buckets; i++)
     {
         maxwell_distribution[i] = 0;
-        // x_axis[i] = min_speed + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)
@@ -245,20 +115,16 @@ void get_speed_distribution(int maxwell_distribution[], int num_buckets, Particl
     }
 }
 
-// void get_kinetic_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 void get_kinetic_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
     float max_energy = get_total_energy(current_particles, num_particles) / 30.;
-    // float max_energy = get_max_kinetic_energy(current_particles, num_particles);
     float min_energy = 0.;
-    // float min_energy = get_min_kinetic_energy(current_particles, num_particles);
     float energy_range = max_energy - min_energy;
     float bucket_size = energy_range / num_buckets;
 
     for (int i = 0; i < num_buckets; i++)
     {
         energy_distribution[i] = 0;
-        // x_axis[i] = min_energy + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)
@@ -268,21 +134,17 @@ void get_kinetic_energy_distribution(int energy_distribution[], int num_buckets,
     }
 }
 
-// void get_electric_potential_energy_distribution(float x_axis[], int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// Unused
 void get_electric_potential_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
 {
     float max_energy = 100.;
-    // get_total_energy(current_particles, num_particles) / 10.;
-    // float max_energy = get_max_electric_potential_energy(current_particles, num_particles);
     float min_energy = 0.;
-    // float min_energy = get_min_electric_potential_energy(current_particles, num_particles);
     float energy_range = max_energy - min_energy;
     float bucket_size = energy_range / num_buckets;
 
     for (int i = 0; i < num_buckets; i++)
     {
         energy_distribution[i] = 0;
-        // x_axis[i] = min_energy + i * bucket_size;
     }
 
     for (int i = 0; i < num_particles; i++)

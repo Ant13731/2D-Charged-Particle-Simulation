@@ -82,21 +82,12 @@ bool Particle::is_moving_apart(Particle &other)
     return (velocity - other.velocity).dot(position - other.position) > 0;
 }
 
-// bool Particle::particles_facing_each_other(Particle &other)
-// {
-//     // Unused - was testing to ensure the velocity updates were working correctly
-//     // This idea didn't really work though
-//     return (velocity - other.velocity).dot(position - other.position) < 0;
-// }
-
 Vec2D Particle::get_velocity_contributions(Particle &other)
 {
     if (!particles_collided(other) || is_moving_apart(other))
     {
         return Vec2D();
     }
-
-    // std::cout << "Particles collided\n";
 
     // 2D elastic collision
     float mass_coefficient = (other.mass * 2) / (other.mass + mass);

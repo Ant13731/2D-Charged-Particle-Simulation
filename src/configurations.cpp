@@ -2,10 +2,6 @@
 #include "configurations.h"
 #include <iostream>
 
-// Func should do the following:
-// Input - nothing - may ask for user input within the func as needed
-// Output: list of particles and total num of particles
-
 float preset_radius = 0.25;
 
 Particle *random_configuration(int sqr_bounds, int &num_total_particles)
