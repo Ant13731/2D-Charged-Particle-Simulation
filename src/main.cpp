@@ -113,6 +113,8 @@ int main()
         return 1;
     }
 
+    Particle prev_particles[num_total_particles];
+
     // int num_total_particles = num_particles + num_charged_particles;
     // Particle next_particles[num_total_particles];
     // int recent_collisions[num_total_particles][num_total_particles];
@@ -328,6 +330,11 @@ int main()
 
         for (int i = 0; i < num_total_particles; i++)
         {
+            prev_particles[i] = current_particles[i].clone();
+        }
+
+        for (int i = 0; i < num_total_particles; i++)
+        {
             current_particles[i].acceleration.zero();
         }
 
@@ -343,9 +350,10 @@ int main()
 
         for (int i = 0; i < num_total_particles; i++)
         {
-            Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            // TODO make this the previous acceleration?????????????????
+            Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, prev_particles[i].acceleration, dt);
+            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
             current_particles[i].position = get_next_position(current_particles[i].position, v_i_half, dt);
-            // Should this acceleration be the next term in the series? It should be according to leapfrog
             current_particles[i].velocity = get_next_half_velocity(v_i_half, current_particles[i].acceleration, dt);
         }
 

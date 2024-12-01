@@ -36,8 +36,8 @@ Particle *uncharged_2_points_1D(int &num_total_particles)
     num_total_particles = 2;
     Particle *current_particles = new Particle[num_total_particles];
 
-    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-10, 0), 1, 0, preset_radius);
-    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(10, 0), 1, 0, preset_radius);
+    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-8, 0), 1, 0, preset_radius);
+    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(8, 0), 1, 0, preset_radius);
 
     return current_particles;
 }
@@ -47,8 +47,8 @@ Particle *uncharged_2_points_2D(int &num_total_particles)
     num_total_particles = 2;
     Particle *current_particles = new Particle[num_total_particles];
 
-    current_particles[0] = Particle(Vec2D(1, 0.124), Vec2D(-10, 0), 1, 0, preset_radius);
-    current_particles[1] = Particle(Vec2D(-1, -0.124), Vec2D(10, 0), 1, 0, preset_radius);
+    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-8, 0), 1, 0, preset_radius);
+    current_particles[1] = Particle(Vec2D(0, 1), Vec2D(0, -8), 1, 0, preset_radius);
 
     return current_particles;
 }
@@ -58,8 +58,8 @@ Particle *charged_2_points_1D_same_charge(int &num_total_particles)
     num_total_particles = 2;
     Particle *current_particles = new Particle[num_total_particles];
 
-    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-1, 0), 1, 1, preset_radius);
-    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(1, 0), 1, 1, preset_radius);
+    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-2, 0), 1, 1, preset_radius);
+    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(2, 0), 1, 1, preset_radius);
 
     return current_particles;
 }
@@ -69,8 +69,8 @@ Particle *charged_2_points_1D_opposite_charge(int &num_total_particles)
     num_total_particles = 2;
     Particle *current_particles = new Particle[num_total_particles];
 
-    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-1, 0), 1, 1, preset_radius);
-    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(1, 0), 1, -1, preset_radius);
+    current_particles[0] = Particle(Vec2D(1, 0), Vec2D(-2, 0), 1, 1, preset_radius);
+    current_particles[1] = Particle(Vec2D(-1, 0), Vec2D(2, 0), 1, -1, preset_radius);
 
     return current_particles;
 }
@@ -80,8 +80,8 @@ Particle *charged_2_points_orbit(int &num_total_particles)
     num_total_particles = 2;
     Particle *current_particles = new Particle[num_total_particles];
 
-    current_particles[0] = Particle(Vec2D(0, 1), Vec2D(10, 0), 1, 1, preset_radius);
-    current_particles[1] = Particle(Vec2D(0, -1), Vec2D(-10, 0), 1, -1, preset_radius);
+    current_particles[0] = Particle(Vec2D(0, 1), Vec2D(5, 0), 1, 3, preset_radius);
+    current_particles[1] = Particle(Vec2D(0, -1), Vec2D(-5, 0), 1, -3, preset_radius);
 
     return current_particles;
 }
@@ -114,7 +114,7 @@ Particle *charged_points_in_circle_no_velocity(int &num_total_particles)
 
 Particle *atom(int &num_total_particles)
 {
-    num_total_particles = 13;
+    num_total_particles = 3;
     Particle *current_particles = new Particle[num_total_particles];
 
     current_particles[0] = Particle(Vec2D(0, 0), Vec2D(0, 0), 100, 100, preset_radius);
