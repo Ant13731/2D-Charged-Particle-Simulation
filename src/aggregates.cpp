@@ -60,14 +60,14 @@ float get_total(Particle current_particles[], int num_particles, ParticlePropert
                 if (i == j)
                     continue;
 
+                // Calculation from https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_II_-_Thermodynamics_Electricity_and_Magnetism_(OpenStax)/07%3A_Electric_Potential/7.02%3A_Electric_Potential_Energy
                 total += current_particles[i].charge * current_particles[j].charge / std::abs((current_particles[i].position - current_particles[j].position).length() + Particle::acceleration_epsilon);
 
+                // Old method (attempted to simply add pairwise electric potential)
                 // std::cout << "Calculating electric potential energy between particles " << i << " and " << j << ": " << current_particles[i].get_electric_potential_energy(current_particles[j]) << std::endl;
-
                 // total += current_particles[i].get_electric_potential_energy(current_particles[j]) / current_particles[i].k;
             }
         }
-        // return Particle::k * total * 2.f;
         return Particle::k * total * 0.5f;
     }
 
@@ -115,61 +115,63 @@ void get_speed_distribution(int maxwell_distribution[], int num_buckets, Particl
     }
 }
 
-void get_kinetic_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
-{
-    float max_energy = get_total_energy(current_particles, num_particles) / 30.;
-    float min_energy = 0.;
-    float energy_range = max_energy - min_energy;
-    float bucket_size = energy_range / num_buckets;
+// Also unused. Does not work for total kinetic energy = 0
+// Produced graphs aren't that interesting either since the speed distribution is more informative
+// void get_kinetic_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// {
+//     float max_energy = get_total_energy(current_particles, num_particles) / 30.;
+//     float min_energy = 0.;
+//     float energy_range = max_energy - min_energy;
+//     float bucket_size = energy_range / num_buckets;
 
-    for (int i = 0; i < num_buckets; i++)
-    {
-        energy_distribution[i] = 0;
-    }
+//     for (int i = 0; i < num_buckets; i++)
+//     {
+//         energy_distribution[i] = 0;
+//     }
 
-    for (int i = 0; i < num_particles; i++)
-    {
-        int bucket = (current_particles[i].get_kinetic_energy() - min_energy) / bucket_size;
-        energy_distribution[bucket]++;
-    }
-}
+//     for (int i = 0; i < num_particles; i++)
+//     {
+//         int bucket = (current_particles[i].get_kinetic_energy() - min_energy) / bucket_size;
+//         energy_distribution[bucket]++;
+//     }
+// }
 
 // Unused
-void get_electric_potential_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
-{
-    float max_energy = 100.;
-    float min_energy = 0.;
-    float energy_range = max_energy - min_energy;
-    float bucket_size = energy_range / num_buckets;
+// void get_electric_potential_energy_distribution(int energy_distribution[], int num_buckets, Particle current_particles[], int num_particles)
+// {
+//     float max_energy = 100.;
+//     float min_energy = 0.;
+//     float energy_range = max_energy - min_energy;
+//     float bucket_size = energy_range / num_buckets;
 
-    for (int i = 0; i < num_buckets; i++)
-    {
-        energy_distribution[i] = 0;
-    }
+//     for (int i = 0; i < num_buckets; i++)
+//     {
+//         energy_distribution[i] = 0;
+//     }
 
-    for (int i = 0; i < num_particles; i++)
-    {
-        float starting_energy = 0;
-        for (int j = 0; j < num_particles; j++)
-        {
-            if (i == j)
-                continue;
+//     for (int i = 0; i < num_particles; i++)
+//     {
+//         float starting_energy = 0;
+//         for (int j = 0; j < num_particles; j++)
+//         {
+//             if (i == j)
+//                 continue;
 
-            if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
-                continue;
+//             if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
+//                 continue;
 
-            starting_energy += current_particles[i].get_electric_potential_energy(current_particles[j]);
-        }
+//             starting_energy += current_particles[i].get_electric_potential_energy(current_particles[j]);
+//         }
 
-        int bucket = (starting_energy - min_energy) / bucket_size;
-        energy_distribution[bucket]++;
-        // if (!current_particles[i].is_charged())
-        //     continue;
+//         int bucket = (starting_energy - min_energy) / bucket_size;
+//         energy_distribution[bucket]++;
+//         // if (!current_particles[i].is_charged())
+//         //     continue;
 
-        // float distance = (current_particles[i].position - Vec2D()).length();
-        // float electric_potential_constant = 8.99e9;
-        // float energy = electric_potential_constant * current_particles[i].charge / distance * 1e-9;
-        // int bucket = (current_particles[i].get_electric_potential_energy() - min_energy) / bucket_size;
-        // energy_distribution[bucket]++;
-    }
-}
+//         // float distance = (current_particles[i].position - Vec2D()).length();
+//         // float electric_potential_constant = 8.99e9;
+//         // float energy = electric_potential_constant * current_particles[i].charge / distance * 1e-9;
+//         // int bucket = (current_particles[i].get_electric_potential_energy() - min_energy) / bucket_size;
+//         // energy_distribution[bucket]++;
+//     }
+// }

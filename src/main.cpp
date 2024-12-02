@@ -50,7 +50,7 @@ void plot_distribution(
 int main()
 {
 
-    // Configuration
+    /// Configuration
     float dt = 0.01;
     float sqr_bounds = 10.;
 
@@ -125,7 +125,7 @@ int main()
     std::vector<float> total_kinetic_energy;
     std::vector<float> total_electric_energy;
 
-    // Step 1: Initialize the plot background
+    /// Initialize the plot background
     // Open a plot window for the particles and their distributions
     int speed_distribution_plot = cpgopen("/XWINDOW");
     int energy_over_time_plot = cpgopen("/XWINDOW");
@@ -151,11 +151,11 @@ int main()
     setup_plot();
     cpgenv(0, 1, -num_total_particles * 2, num_total_particles * 50, 0, 1); // 7000 seems good for 200 particles
 
-    // Step 3: While user has not exited the program
+    /// Main loop - While user has not exited the program
     std::string axis_opts = "BC";
     for (int counter = 0;; counter++)
     {
-        // Redraw the particle plot
+        /// Redraw the particle plot
         cpgslct(particle_plot);
         cpgeras();
         cpgslw(3);
@@ -163,10 +163,10 @@ int main()
         cpgbox(axis_opts.c_str(), 0.0, 0, axis_opts.c_str(), 0.0, 0);
         cpgslw(20);
 
-        // timer to make the graph update smoothly, every dt seconds
+        // Timer to make the graph update smoothly, every dt seconds
         auto iteration_timer = std::chrono::high_resolution_clock::now();
 
-        // - Step 4: Plot the particles
+        // Plot the particles
         std::cout << "Plotting particles: " << counter << "\n";
         for (int i = 0; i < num_total_particles; i++)
         {
@@ -181,6 +181,8 @@ int main()
                 std::cout << current_particles[i].to_string() << std::endl;
         }
 
+        /// Calculate future movement
+        // Calculate pairwise collisions
         for (int i = 0; i < num_total_particles; i++)
         {
             for (int j = i; j < num_total_particles; j++)
@@ -198,9 +200,11 @@ int main()
                 // }
             }
         }
+        // Calculate collisions with the container (walls)
         for (int i = 0; i < num_total_particles; i++)
             current_particles[i].velocity = container.get_collision_velocity(current_particles[i]);
 
+        // Calculate acceleration on each particle
         for (int i = 0; i < num_total_particles; i++)
         {
             prev_particles[i] = current_particles[i].clone();
@@ -221,6 +225,7 @@ int main()
             }
         }
 
+        // Update positions and velocities
         for (int i = 0; i < num_total_particles; i++)
         {
             Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, prev_particles[i].acceleration, dt);
@@ -251,6 +256,7 @@ int main()
         //     std::cout << t;
         // }
 
+        /// Result reporting for current iteration
         float delta_k = counter == 0 ? 0.f : total_kinetic_energy.back();
         float delta_u = counter == 0 ? 0.f : total_electric_energy.back();
 
@@ -300,12 +306,10 @@ int main()
         cpgsci(6);
         cpgline(total_electric_energy.size(), &x_axis_vec[0], &total_electric_energy[0]);
 
-        // Plot distributions
+        // Plot distribution
         cpgslct(speed_distribution_plot);
         get_speed_distribution(speed_distribution, distribution_buckets, current_particles, num_total_particles);
-        // get_speed_distribution(x_axis, speed_distribution, distribution_buckets, current_particles, num_total_particles);
         plot_distribution(
-            // x_axis,
             speed_distribution,
             distribution_buckets,
             "Speed Distribution",
