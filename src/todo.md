@@ -52,3 +52,9 @@ Questions:
 - total speed of particles sometimes goes crazy for large amounts
   - 2D elastic collision equations may be the issue - is there anything like charged particles to calculate acceleration of this?
   - could have to do with how we handle multi-particle collisions - right now we just calculate the contributions pairwise and add them together -->
+
+Questions:
+
+- hw7 header file
+- loss of energy/odd energy diagrams for charged particles
+- potential + kinetic does not add up to a constant

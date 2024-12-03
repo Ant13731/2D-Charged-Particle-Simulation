@@ -51,6 +51,7 @@ int main()
 {
 
     /// Configuration
+    bool charged_collisions_enabled = true;
     float dt = 0.01;
     float sqr_bounds = 10.;
 
@@ -74,7 +75,8 @@ int main()
               << "6. 2 charged particles in orbit\n"
               << "7. Charged particles in a circle\n"
               << "8. Charged particles in a circle with no velocity\n"
-              << "9. Atom\n";
+              << "9. Atom\n"
+              << "10. 8-ball pool\n";
 
     std::cin >> configuration_choice;
     switch (configuration_choice)
@@ -105,6 +107,9 @@ int main()
         break;
     case 9:
         current_particles = atom(num_total_particles);
+        break;
+    case 10:
+        current_particles = pool(num_total_particles);
         break;
     default:
         std::cout << "Invalid choice\n";
@@ -149,12 +154,16 @@ int main()
 
     cpgslct(energy_over_time_plot);
     setup_plot();
-    cpgenv(0, 1, -num_total_particles * 2, num_total_particles * 50, 0, 1); // 7000 seems good for 200 particles
+    cpgenv(0, 1, -num_total_particles * 50, num_total_particles * 50, 0, 1); // 7000 seems good for 200 particles
 
     /// Main loop - While user has not exited the program
     std::string axis_opts = "BC";
     for (int counter = 0;; counter++)
     {
+
+        // if (counter > 20)
+        //     return 0;
+
         /// Redraw the particle plot
         cpgslct(particle_plot);
         cpgeras();
@@ -192,12 +201,12 @@ int main()
                     continue;
 
                 // Uncomment to disable collisions
-                // if (!current_particles[i].is_charged() || !current_particles[j].is_charged())
-                // {
-                Vec2D temp = current_particles[i].get_velocity_contributions(current_particles[j]);
-                current_particles[j].velocity += current_particles[j].get_velocity_contributions(current_particles[i]);
-                current_particles[i].velocity += temp;
-                // }
+                if (!current_particles[i].is_charged() || !current_particles[j].is_charged() || charged_collisions_enabled)
+                {
+                    Vec2D temp = current_particles[i].get_velocity_contributions(current_particles[j]);
+                    current_particles[j].velocity += current_particles[j].get_velocity_contributions(current_particles[i]);
+                    current_particles[i].velocity += temp;
+                }
             }
         }
         // Calculate collisions with the container (walls)
@@ -205,9 +214,20 @@ int main()
             current_particles[i].velocity = container.get_collision_velocity(current_particles[i]);
 
         // Calculate acceleration on each particle
+        // for (int i = 0; i < num_total_particles; i++)
+        // {
+        //     prev_particles[i] = current_particles[i].clone();
+        // }
+
+        // Update positions and velocities
         for (int i = 0; i < num_total_particles; i++)
         {
-            prev_particles[i] = current_particles[i].clone();
+            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            current_particles[i].velocity = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            current_particles[i].position = get_next_position(current_particles[i].position, current_particles[i].velocity, dt);
+
+            // current_particles[i].velocity = get_next_half_velocity(v_i_half, current_particles[i].acceleration, dt);
         }
 
         for (int i = 0; i < num_total_particles; i++)
@@ -225,13 +245,13 @@ int main()
             }
         }
 
-        // Update positions and velocities
         for (int i = 0; i < num_total_particles; i++)
         {
-            Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, prev_particles[i].acceleration, dt);
             // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
-            current_particles[i].position = get_next_position(current_particles[i].position, v_i_half, dt);
-            current_particles[i].velocity = get_next_half_velocity(v_i_half, current_particles[i].acceleration, dt);
+            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
+            // current_particles[i].position = get_next_position(current_particles[i].position, v_i_half, dt);
+
+            current_particles[i].velocity = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
         }
 
         // Debugging table for most recent collision, only for small numbers of particles

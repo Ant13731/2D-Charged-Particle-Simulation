@@ -106,8 +106,8 @@ Vec2D Particle::get_acceleration_contributions(Particle &other)
         return Vec2D();
     }
 
-    float distance = std::pow((position - other.position).length(), 2.) + acceleration_epsilon;
-    return (position - other.position) * k * charge * other.charge / (distance * mass);
+    float distance = std::pow((position - other.position).length() + acceleration_epsilon, 2.);
+    return (position - other.position).normalize() * k * charge * other.charge / (distance * mass);
 }
 bool Particle::is_charged() { return !(charge < 0.000001 && charge > -0.000001); }
 

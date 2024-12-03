@@ -17,3 +17,4 @@ Particle *charged_points_in_circle_no_velocity(int &num_total_particles);
 
 /*Two small particles orbit one large particle*/
 Particle *atom(int &num_total_particles);
+Particle *pool(int &num_total_particles);

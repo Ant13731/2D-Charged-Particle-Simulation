@@ -29,6 +29,8 @@ Elastic Collisions between Contained Particles}
 \begin{document}
 \maketitle
 
+\tableofcontents
+
 \section{Introduction}
 Visualizing the effects of colliding elastic objects enables a clearer understanding of extremely small or extremely large natural phenomena,
 especially in the fields of astrophysics (eg. rotation of stars in a galaxy) and chemistry (eg. ideal gas, electron/proton interactions).
@@ -153,8 +155,8 @@ as shown below. Both particles have the same initial speed and are pointed towar
 
 Plotting the total energy and speed over time (blue and green respectively),
 we find that kinetic energy is entirely conserved.
-The purple line indicates electric potential energy and can be ignored.
-Note that there is no scale for Time since this graph updates by combining new data every $dt$ seconds.
+The purple line indicates electric potential energy and can be ignored for now.
+Note that there is no scale for the Time axis since this graph updates by appending new data every $dt$ seconds.
 This means that initial iterations take up the entire plot and then compress as time goes on
 and the plot holds more data.
 \\
@@ -166,7 +168,7 @@ and the plot holds more data.
 Similar to the previous test, but we now check that the angle of deflection for both particles are correct.
 A simple case for examining angles is to move the point previously located at $(-1,0)$ to $(0,1)$ and point it towards the origin.
 Thus, the two particles will meet at a 90-degree angle and bounce in perpendicular directions.
-The initial layout of this test looks like (particles located at the top and right):
+The initial layout of this test has particles located at the top and right with velocities toward the origin:
 \\
 \begin{center}
     \includegraphics[scale=0.5]{uncharged_2_2D_start}
@@ -186,11 +188,13 @@ Energy is conserved during this as both particles bounce with the same net speed
 (although we do not include the energy vs time graph here since it looks the same as section 3.1.1).
 
 \subsubsection{200 Random Particles}
-With a large amount of particles, we can now examine the Maxwell-Boltzmann distribution.
+With a large amount of particles, we can now examine the distribution of speed compared to the Maxwell-Boltzmann distribution.
 The speed distribution of particles is separated into 30 ``buckets'',
-where each bucket holds a range of particle speeds.
-Note that the x-axis once again does not include precise velocity ranges,
+where each particle is sorted into a bucket based on its speed.
+Each bucket holds a range of $1m/s$, where he maximum speed bucket is $30 m/s$
+Note that the specific x-axis speeds are not especially important
 since it is more important to visualize the groupings of particles rather than the exact speed of the particles themselves.
+For example, we could scale down the interpreted particle speeds based on the maximum speed and receive a similar graph.
 
 An image of the simulated particles is below:
 \\
@@ -206,7 +210,7 @@ into the Maxwell-Boltzmann distribution.
 \end{center}
 
 Calculating the exact curve of the distribution is slightly out of the scope of this project
-since we do not have any information on gas-specific statistics (ie., temperature, pressure, heat),
+since we do not collect any information on gas-specific statistics (ie., temperature, pressure, heat),
 but the characteristic bulge and slow taper can be visually estimated and compared with Wikipedia's simulation:
 \\
 \begin{center}
@@ -219,6 +223,27 @@ Finally, we see that kinetic energy is indeed conserved, although total speed fl
     \includegraphics[scale=0.5]{uncharged_random_energy}
 \end{center}
 
+\subsubsection{8-Ball Pool with 225 Particles}
+From the previous experiment, we can hypothesize that given a high enough density of particles in an enclosed space,
+the initial distribution does not matter. To test this claim, we select an experiment grounded with the real world:
+what would happen if we removed the friction and pockets from a pool table when making a ``break'' shot?
+For better visualization of the Maxwell-Boltzman distribution, we increase the number of balls on the pool table to 200.
+The initial layout of the test is shown in the following figure along with the initial speed distribution.
+Note that only one particle is moving to the right at $100 m/s$ while all others are at rest.
+\\
+\begin{center}
+    \includegraphics[scale=0.5]{uncharged_pool}
+    \includegraphics[scale=0.5]{uncharged_pool_dist}
+\end{center}
+
+After about one minute, we see a very similar result as in section 3.1.3. In fact, aside from the differences in initial energy,
+the two plots are nearly indistinguishable.
+\\
+\begin{center}
+    \includegraphics[scale=0.5]{uncharged_pool_2}
+    \includegraphics[scale=0.5]{uncharged_pool_dist_2}
+\end{center}
+
 \subsection{Charged Particles}
 The inclusion of charged particles within the simulation adds an additional ODE for our consideration,
 namely, a non-constant acceleration due to Coulomb's Law.
@@ -226,7 +251,7 @@ The focus of this extension is to demonstrate how equations for dynamic particle
 can be manipulated and reused to provide an idea of orbital movement.
 Similar to gravity, the acceleration of charged particles is remotely influenced through other nearby particles.
 
-\subsubsection{2 Particles in a 1D Collisions}
+\subsubsection{2 Particles Interacting in 1D}
 The same experiment for uncharged particles can be performed on charged particles.
 
 For particles with the same charge, the setup is as follows (initial velocity towards the origin):
@@ -239,45 +264,67 @@ As the particles approach one another, their speed and kinetic energy transform 
 Eventually, the particles stop a small distance before collisions and begin moving in the opposite direction.
 Then, when moving apart, the potential energy is converted back into kinetic and the particles speed into the wall.
 An oscillation pattern between the kinetic energy (blue) and electric potential (pink) can be seen below.
-Interestingly, the total energy (black) appears to fluctuate due to time delays
-converting between kinetic and electric energy.
-The total energy has a slight monotonic change every iteration,
-likely caused by the soft max function preventing particles from having
-a distance smaller than some error value.
-Although, these errors do not become obvious until after 5000 iterations of the simulation.
+Note that the total energy of the system (black) is conserved throughout and total speed (green) follows the kinetic energy.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{charged_2_same_energy}
 \end{center}
 
-Similar behaviour can be seen for opposite charges, with the energy curves flipped:
+Similar behaviour can be seen for opposite charges, with the energy curves flipped.
+There is a slight, repeated fluctuation in total energy at the moment of collision,
+but the overall energy of the system does not change.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{charged_2_opp}
     \includegraphics[scale=0.5]{charged_2_opp_energy}
 \end{center}
 
-In the case of particles attracted to one another, when collisions between particles were enabled,
-the charged particles seemed to lose energy every iteration, slowing and eventually coming to a stop at the origin.
-However, when collisions were disabled (so that particles had a radius of 0),
-the system seemed to gain energy (shown below). Disabled collisions allowed
-the particles to pass through one another (and the distance between them to become infinitesimally small) rather than colliding.0.
+For particles of opposite charge, the total energy of the system remained constant when collisions were enabled.
+However, when collisions were disabled (so that particles had a radius of 0 and could become arbitrarily close to one another),
+the energy of the system behaved erratically.
+Disabled collisions allowed
+the particles to pass through one another (and the distance between them to become infinitesimally small) rather than colliding.
+This drastic change in behaviour is likely due to the imprecision of integration at high acceleration and velocity values.
+Consider the following timeline for two particles:
+\begin{itemize}
+    \item The two particles start far away and move towards one another at a moderate but increasing velocity
+    \item At some critical point, the particles reach their closest point. They experience a high force of attraction
+    \item The first part of Leap Frog converts that high acceleration into high velocity, enough such that the particles swap places.
+    In other words, the particle on the right is now on the left and vice versa.
+    \item Leap Frog then recalculates the force of acceleration, based on the new particle positions.
+    However, the two particles are farther apart from one another than they were in step 2.
+    Thus, the new force of acceleration is opposite but not equal to that step.
+    \item Since there is asymmetry in the moments before and after the particles swapped places,
+    the particles zoom into the bounding walls before meeting again and performing the reverse.
+\end{itemize}
+% In particular, if two particles are extremely close at one point in time but
+% accelerate very far in the opposite direction the next moment, the increased
+% kinetic energy from the first moment does not get a chance to convert back to electric potential energy after the particles have swapped positions.
+We have attempted to mitigate these errors through an additional epsilon term to prevent the distance of two particles from reaching 0,
+but the above situation is still applicable.
+For all other tests, we will keep collisions on to remove errors of this kind.
+The second graph below is an example of the same configuration at half the $dt$ time step.
+The final graph is the energy over time at a tenth of the original time step.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{charged_2_opp_energy_no_collision}
+    \includegraphics[scale=0.5]{charged_2_opp_energy_no_collision_half_time}
+\end{center}
+\begin{center}
+    \includegraphics[scale=0.5]{charged_2_opp_energy_no_collision_tenth_time}
 \end{center}
 
 \subsubsection{Orbiting Particles}
-Although the model may not perfectly conserve energy, we can still create simulations of orbits for a short period of time.
-The below setup (with initial velocities pointed vertically and opposite to one another) led to a stable elliptical orbit about the origin.
+The below setup places two oppositely charged particles at equal and opposite distances from the origin, with initial velocity parallel to the y-axis.
+This led to a stable elliptical orbit about the origin.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{orbit}
 \end{center}
 
-In the below graph, fluctuations in kinetic energy (blue) eventually stabilized into a consistent oscillation as well.
-Note that electric potential energy (pink) is less than 0, so it does not display on the graph.
-Instead, the effects of (the near-constant) electric potential can be seen through the total energy (black)
+In the below graph, fluctuations in kinetic energy (blue) and electric potential energy (pink) oscillate opposite to one another,
+as the two particles get closer/faster and further/slower to one another.
+We still note that the total energy (black) remains constant throughout.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{orbit_energy}
@@ -285,17 +332,18 @@ Instead, the effects of (the near-constant) electric potential can be seen throu
 
 Orbits akin to Bohr-Rutherford models of the atom,
 where small charges orbit a large central charge,
-can be seen by configuring several negatively charged masses initially travelling perpendicular to a large red mass, like below:
+can be seen by configuring several negatively charged masses initially travelling
+perpendicular to the electric force from a large red mass.
+The energy over time is shown below, following the same oscillation as above.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{atom}
+    \includegraphics[scale=0.5]{atom_energy}
 \end{center}
 
 \subsubsection{200 Random Particles}
 This test is similar to that of the uncharged particles,
 but all particles have been either assigned a positive (red) or negative (blue) charge.
-The loss of energy conservation and differences between calculated electric potential energy
-vs. kinetic energy are visible after $\approx 1000$ iterations of 200 randomly charged particles.
 The setup and energy graphs are listed below:
 \\
 \begin{center}
@@ -303,19 +351,11 @@ The setup and energy graphs are listed below:
     \includegraphics[scale=0.5]{charged_random_energy}
 \end{center}
 
-These random particles have a somewhat similar shape to the Maxwell-Boltzmann distribution, but with far more randomness.
-In particular, buckets 12-20 contain far more particles than in section 3.1.3, and buckets 4-8 do not have a consistent sloped shape.
+These random particles have a similar shape to the Maxwell-Boltzmann distribution,
+likely due to the high ratio of kinetic to electric potential energy.
 \\
 \begin{center}
     \includegraphics[scale=0.5]{charged_random_dist}
-\end{center}
-
-
-Note that for the above experiment, collisions were enabled.
-Turning them off results in the following erratic graph, with large gains in total energy, similar results to section 3.2.1:
-\\
-\begin{center}
-    \includegraphics[scale=0.5]{charged_random_energy_no_collisions}
 \end{center}
 
 
@@ -326,12 +366,13 @@ Since snapshots of the model have been included as part of initial configuration
 this section does not include any additional figures.
 For consistency, this section only contains an analysis of the initial and extended tests described in section 3.
 
-\subsection{Initial Model}
-Overall, the basic model of uncharged particles behaved as expected
+Overall, both models of uncharged and charged particles behaved as expected
 with respect to energy conservation and speed distribution.
-Leap Frog integration had a high degree of precision for $>5000$ simulation iterations,
+Selected tests also demonstrated the conservation of momentum and distance-based forces.
+Outside of exceptional circumstances, Leap Frog integration had a high degree of precision throughout all iterations of the simulation,
 demonstrating its effectiveness for dynamic systems.
 
+\subsection{Initial Model}
 Initially, I faced difficulties with conservation of kinetic energy for uncharged particles
 since some collisions would last for longer than one $dt$ instant.
 To counter this, I implemented a directional check to ensure that particles only
@@ -341,8 +382,8 @@ collide when they are facing towards one another
 
 Along with the above bug in collision calculations, I had also mistakenly tried calculating new velocities
 based on the contributions of each particle at one point in time.
-However, doing so led to very unpredictable behaviour when 3 or more particles collided at once.
-Particles involved in complex collisions would either explode with speed or slow down immensely.
+However, doing so led to very unpredictable behaviour when 3 or more particles collided at once, where
+involved particles would either explode with speed or slow down immensely.
 Eventually, this was resolved by calculating the pairwise collisions of every particle in some arbitrarily chosen order.
 
 Although the energy-time graphs are not very interesting in section 3.1,
@@ -353,42 +394,33 @@ For a simulation with no explicit acceleration changes, all lines on the graph s
 Since charged particles were used with a mass of $1 kg$ and charges equal to $\pm 1 C$,
 a far lower Coulomb constant $k$ was necessary to prevent extreme changes in acceleration.
 Dealing with extreme values in the case of charged particles was especially difficult,
-as floating point exceptions and segmentation faults often occurred as a result of
+as small errors in transforming continuous phenomena into discrete often occurred as a result of
 particles escaping the boundaries or coming in close contact with one another.
 
-Enabling collisions during testing did produce some curious but reasonable results.
-In the case of two oppositely-charged particles coming in contact,
-the drop in net energy makes sense since both particles
-would have felt a net acceleration almost always against the reversed velocities of any collisions,
-slowly reducing the net speed of the system.
-In other words, the initial potential energy could not entirely convert into kinetic energy
-before the two particles collided. So when the velocity of each particle was reversed due to the collision equations,
-the acceleration due to electric forces appeared to cause a loss in energy.
-In the future, our simulation could attempt to counteract this loss
-by temporarily disabling the acceleration at the point of collision,
-but is beyond the scope of the project.
-In reality, real-world charged particles are too small and too close together
-to follow simplified collision rules based on rules of momentum and energy conservation.
-Other laws take hold to dictate the flow of energy.
+Enabling collisions during testing produced all results as expected
+with respect to the conservation of energy and distribution of speed
+In the case of two charged particles interacting with one another,
+the oscillation between kinetic and electric potential energy matched
+expectations and maintained conservation rules.
 
 For tests with collisions disabled, as mentioned in section 3.2.1,
 monotonic changes in the total system energy could be caused
-by the soft max function limiting acceleration due to surrounding charges.
+by a combination of the transition to discrete steps and
+the soft max function limiting acceleration due to surrounding charges.
 
 While the charged particle model massively simplifies all the complex interactions between particles in the real world,
-the visualization of interacting particles is more than reasonable for at least the first 1000 iterations of $dt$,
-before calculation errors cumulate.
+the visualization of interacting particles is more than reasonable for most common configurations.
 With the charged model, we can plainly see physical phenomena like orbital movement as a product of a constant central acceleration
 and an appropriate starting velocity.
 
-\section{Future Work}
-Both models performed well enough for the scope of this project,
+\section{Conclusion}
+Both models performed well to simulate moving particles,
 but there is far more that could be done to explore this topic further:
 \begin{itemize}
     \item Incorporation of gravity as an optional force.
     Implementing this with the current state of my project should not be terribly difficult,
     since a developer would only need to add the force of gravity to the collection of acceleration contributions.
-    The two independent variables, mass and distance, are accessible within each particle's object.
+    The two independent variables required to calculate gravitational force (mass and distance) are readily accessible within each particle's object.
     \item Expanding the container to a variety of different shapes.
     This would necessarily involve improvements to wall collision calculations in accommodating angles or curves.
     \item Improve wall bounce calculations to ensure that out-of-bounds objects are pushed back in bounds.
@@ -400,26 +432,29 @@ but there is far more that could be done to explore this topic further:
     method of calculating distant-dependent forces using a divide and conquer method.
     \item Add friction or an electric field map to provide non-constant acceleration outside of particle-particle interactions.
     This would enable the model to run other physics-based simulations like a mass spectrometer or even projectile motion
-    (eg. a positively charged particle with a negatively charged bottom plate).
+    (eg. a positively charged particle moving parallel to a negatively charged bottom plate).
     \item Count the number of collisions between particles against a wall.
     3Blue1Brown has an excellent video exploring a special case where large
     masses collide with small masses with a ratio $\pi\times 10^x$ where $x$ is based on the ratio of the object masses
     \footnote{\url{https://www.youtube.com/watch?v=jsYwFizhncE}}.
     \item Examine the overall (conservation of) momentum of the system over time.
+    The visualization of momentum could be plotted on the moving particle graph with vectors showing the momentum of each particle.
     \item Calculations for pressure, temperature, etc. in the context of the ideal gas law.
-    This would also enable a direct overlay of the Maxwell-Boltzman distribution.
+    This would also enable a direct overlay of the Maxwell-Boltzman distribution on the energy distribution graphs seen above.
     \item Interactivity improvements, like adding energy to the system in the form of heat, controlling select particles,
     or tracing the path of selected particles to find random walk behaviour
     \footnote{\url{https://en.wikipedia.org/wiki/Brownian_motion}}.
+    Adding containers that react to pressure differences may serve as a more realistic simulation of the physical world.
 \end{itemize}
 
-\section{Conclusion}
 Exploring and researching about particle simulation in the context of C++
 helped me gain a deeper understanding and appreciation of physical interactions.
 Among the most interesting findings was the mimicking of orbiting
 objects through charged particles with select initial velocities,
 the Maxwell-Boltzmann distribution of neutral particles,
-and watching the randomness of an ideal gas particle's path.
+and the behaviour of charged particles given pre-selected configurations.
+Both models serve as an excellent tool to better visualize and interpret miniscule molecule-level movements.
+
 
 
 
