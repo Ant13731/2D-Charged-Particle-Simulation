@@ -116,19 +116,7 @@ Particle *atom(int &num_total_particles)
 
     current_particles[0] = Particle(Vec2D(0, 0), Vec2D(0, 0), 100, 400, preset_radius);
     current_particles[1] = Particle(Vec2D(5, 0), Vec2D(0, -20), 1, -1, preset_radius);
-    // current_particles[6] = Particle(Vec2D(5, -1), Vec2D(0, -20), 1, -1, preset_radius);
-    // current_particles[7] = Particle(Vec2D(5, -2), Vec2D(0, -20), 1, -1, preset_radius);
-    // current_particles[8] = Particle(Vec2D(5, -3), Vec2D(0, -20), 1, -1, preset_radius);
     current_particles[2] = Particle(Vec2D(-5, 0), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[3] = Particle(Vec2D(-5, 1), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[4] = Particle(Vec2D(-5, 2), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[5] = Particle(Vec2D(-5, 3), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[9] = Particle(Vec2D(-1, 1), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[10] = Particle(Vec2D(-1, 1.5), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[11] = Particle(Vec2D(-1, 2), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[12] = Particle(Vec2D(-1, 2.5), Vec2D(0, 20), 1, -1, preset_radius);
-    // current_particles[3] = Particle(Vec2D(0, 5), Vec2D(20, 0), 1, -1, preset_radius);
-    // current_particles[4] = Particle(Vec2D(0, -5), Vec2D(-20, 0), 1, -1, preset_radius);
 
     return current_particles;
 }
@@ -140,7 +128,7 @@ Particle *pool(int &num_total_particles)
 
     current_particles[0] = Particle(Vec2D(-10, 0), Vec2D(100, 0), 1, 0, preset_radius);
 
-    // Create 200 particles ranging from 0 to 10 in the x direction, spaced 0.3 units apart
+    // Create a diamond of particles similar to an 8-ball pool setup
     for (int i = 0; i < 15; i++)
     {
         for (int j = 0; j < 15; j++)

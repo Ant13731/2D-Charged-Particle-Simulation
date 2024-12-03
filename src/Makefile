@@ -1,7 +1,7 @@
-main: main.o classes.o ode.o aggregates.o configurations.o classes.h ode.h table.h aggregates.h configurations.h
+main: main.o classes.o ode.o aggregates.o configurations.o classes.h ode.h aggregates.h configurations.h
 	c++ --std=c++11 -O0 -g -o main main.o classes.o ode.o aggregates.o configurations.o -ltrapfpe -lpgplot -lcpgplot -lX11
 
-main.o: main.cpp classes.h ode.h table.h
+main.o: main.cpp classes.h ode.h
 	c++ --std=c++11 -c main.cpp -g
 
 classes.o: classes.cpp classes.h

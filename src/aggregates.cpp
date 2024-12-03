@@ -62,10 +62,6 @@ float get_total(Particle current_particles[], int num_particles, ParticlePropert
 
                 // Calculation from https://phys.libretexts.org/Bookshelves/University_Physics/University_Physics_(OpenStax)/University_Physics_II_-_Thermodynamics_Electricity_and_Magnetism_(OpenStax)/07%3A_Electric_Potential/7.02%3A_Electric_Potential_Energy
                 total += current_particles[i].charge * current_particles[j].charge / std::abs((current_particles[i].position - current_particles[j].position).length() + Particle::acceleration_epsilon);
-
-                // Old method (attempted to simply add pairwise electric potential)
-                // std::cout << "Calculating electric potential energy between particles " << i << " and " << j << ": " << current_particles[i].get_electric_potential_energy(current_particles[j]) << std::endl;
-                // total += current_particles[i].get_electric_potential_energy(current_particles[j]) / current_particles[i].k;
             }
         }
         return Particle::k * total * 0.5f;

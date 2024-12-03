@@ -1,7 +1,6 @@
 #include "ode.h"
 #include "classes.h"
 #include "cpgplot.h"
-#include "table.h"
 #include "aggregates.h"
 #include <iostream>
 #include <ctime>
@@ -160,10 +159,6 @@ int main()
     std::string axis_opts = "BC";
     for (int counter = 0;; counter++)
     {
-
-        // if (counter > 20)
-        //     return 0;
-
         /// Redraw the particle plot
         cpgslct(particle_plot);
         cpgeras();
@@ -213,23 +208,14 @@ int main()
         for (int i = 0; i < num_total_particles; i++)
             current_particles[i].velocity = container.get_collision_velocity(current_particles[i]);
 
-        // Calculate acceleration on each particle
-        // for (int i = 0; i < num_total_particles; i++)
-        // {
-        //     prev_particles[i] = current_particles[i].clone();
-        // }
-
         // Update positions and velocities
         for (int i = 0; i < num_total_particles; i++)
         {
-            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
             current_particles[i].velocity = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
-            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
             current_particles[i].position = get_next_position(current_particles[i].position, current_particles[i].velocity, dt);
-
-            // current_particles[i].velocity = get_next_half_velocity(v_i_half, current_particles[i].acceleration, dt);
         }
 
+        // Need to calculate future acceleration mid-way through Leap Frog integration
         for (int i = 0; i < num_total_particles; i++)
         {
             current_particles[i].acceleration.zero();
@@ -247,34 +233,8 @@ int main()
 
         for (int i = 0; i < num_total_particles; i++)
         {
-            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
-            // Vec2D v_i_half = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
-            // current_particles[i].position = get_next_position(current_particles[i].position, v_i_half, dt);
-
             current_particles[i].velocity = get_next_half_velocity(current_particles[i].velocity, current_particles[i].acceleration, dt);
         }
-
-        // Debugging table for most recent collision, only for small numbers of particles
-        // if (num_total_particles <= 6)
-        // {
-        //     TextTable t('-', '|', '+');
-        //     t.add("");
-        //     for (int i = 0; i < num_total_particles; i++)
-        //     {
-        //         t.add("Particle " + std::to_string(i));
-        //     }
-        //     t.endOfRow();
-        //     for (int i = 0; i < num_total_particles; i++)
-        //     {
-        //         t.add("Particle " + std::to_string(i));
-        //         for (int j = 0; j < num_total_particles; j++)
-        //         {
-        //             t.add(std::to_string(recent_collisions[i][j]));
-        //         }
-        //         t.endOfRow();
-        //     }
-        //     std::cout << t;
-        // }
 
         /// Result reporting for current iteration
         float delta_k = counter == 0 ? 0.f : total_kinetic_energy.back();
