@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2024.1.11)  3 DEC 2024 13:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 20.12) (preloaded format=pdflatex 2024.1.11)  3 DEC 2024 15:02
 entering extended mode
 **./report.tex
 (report.tex
@@ -543,12 +543,32 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip57
 )
+("C:\Program Files\MiKTeX\tex/latex/caption\caption.sty"
+Package: caption 2023/08/05 v3.6o Customizing captions (AR)
+
+("C:\Program Files\MiKTeX\tex/latex/caption\caption3.sty"
+Package: caption3 2023/07/31 v2.4d caption3 kernel (AR)
+\caption@tempdima=\dimen266
+\captionmargin=\dimen267
+\caption@leftmargin=\dimen268
+\caption@rightmargin=\dimen269
+\caption@width=\dimen270
+\caption@indent=\dimen271
+\caption@parindent=\dimen272
+\caption@hangindent=\dimen273
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count302
+\c@continuedfloat=\count303
+Package caption Info: hyperref package is loaded.
+Package caption Info: listings package is loaded.
+)
 ("C:\Program Files\MiKTeX\tex/latex/listings\lstlang1.sty"
 File: lstlang1.sty 2020/03/24 1.8d listings language file
 )
 ("C:\Program Files\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def"
 File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
-\l__kernel_color_stack_int=\count302
+\l__kernel_color_stack_int=\count304
 \l__pdf_internal_box=\box64
 )
 (report.aux)
@@ -570,19 +590,19 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 29.
 LaTeX Font Info:    ... okay on input line 29.
-\c@lstlisting=\count303
+\c@lstlisting=\count305
  ("C:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count304
-\scratchdimen=\dimen266
+\scratchcounter=\count306
+\scratchdimen=\dimen274
 \scratchbox=\box65
-\nofMPsegments=\count305
-\nofMParguments=\count306
+\nofMPsegments=\count307
+\nofMParguments=\count308
 \everyMPshowfont=\toks41
-\MPscratchCnt=\count307
-\MPscratchDim=\dimen267
-\MPnumerator=\count308
-\makeMPintoPDFobject=\count309
+\MPscratchCnt=\count309
+\MPscratchDim=\dimen275
+\MPnumerator=\count310
+\makeMPintoPDFobject=\count311
 \everyMPtoPDFconversion=\toks42
 ) ("C:\Program Files\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -600,7 +620,7 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ("C:\Program Files\MiKTeX\tex/generic/gettitlestring\gettitlestring.sty"
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count310
+\c@section@level=\count312
 )
 LaTeX Info: Redefining \ref on input line 29.
 LaTeX Info: Redefining \pageref on input line 29.
@@ -610,12 +630,13 @@ LaTeX Info: Redefining \nameref on input line 29.
 \@outlinefile=\write4
 \openout4 = `report.out'.
 
-
-No file report.toc.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+ (report.toc)
 \tf@toc=\write5
 \openout5 = `report.toc'.
 
-[1
+ [1
 
 {C:/Users/hunta/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2]
 Underfull \hbox (badness 10000) in paragraph at lines 114--114
@@ -634,287 +655,427 @@ Underfull \hbox (badness 10000) in paragraph at lines 149--152
 
  []
 
-<./images//uncharged_2_particles_1D.png, id=151, 508.14844pt x 352.31625pt>
+<./images//uncharged_2_particles_1D.png, id=178, 508.14844pt x 352.31625pt>
 File: ./images//uncharged_2_particles_1D.png Graphic file (type png)
 <use ./images//uncharged_2_particles_1D.png>
 Package pdftex.def Info: ./images//uncharged_2_particles_1D.png  used on input 
 line 153.
 (pdftex.def)             Requested size: 254.0736pt x 176.15768pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--163
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 154.
+See the caption package documentation for explanation.
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 157--164
 
  []
 
-<./images//uncharged_2_particles_1D_energy.png, id=153, 572.1375pt x 459.96844p
+<./images//uncharged_2_particles_1D_energy.png, id=185, 572.1375pt x 459.96844p
 t>
 File: ./images//uncharged_2_particles_1D_energy.png Graphic file (type png)
 <use ./images//uncharged_2_particles_1D_energy.png>
 Package pdftex.def Info: ./images//uncharged_2_particles_1D_energy.png  used on
- input line 164.
+ input line 165.
 (pdftex.def)             Requested size: 286.06804pt x 229.98366pt.
-[4 <./images//uncharged_2_particles_1D.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 168--173
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 166.
+See the caption package documentation for explanation.
+
+[5 <./images//uncharged_2_particles_1D.png> <./images//uncharged_2_particles_1D
+_energy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
 
  []
 
-<./images//uncharged_2_2D_start.png, id=160, 529.98pt x 367.3725pt>
+<./images//uncharged_2_2D_start.png, id=193, 529.98pt x 367.3725pt>
 File: ./images//uncharged_2_2D_start.png Graphic file (type png)
 <use ./images//uncharged_2_2D_start.png>
 Package pdftex.def Info: ./images//uncharged_2_2D_start.png  used on input line
- 174.
+ 176.
 (pdftex.def)             Requested size: 264.98933pt x 183.68579pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 177--181
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 177.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 180--184
 
  []
 
-[5 <./images//uncharged_2_particles_1D_energy.png> <./images//uncharged_2_2D_st
-art.png>]
-<./images//uncharged_2_2D_after.png, id=167, 535.2497pt x 356.83313pt>
+<./images//uncharged_2_2D_after.png, id=194, 535.2497pt x 356.83313pt>
 File: ./images//uncharged_2_2D_after.png Graphic file (type png)
 <use ./images//uncharged_2_2D_after.png>
 Package pdftex.def Info: ./images//uncharged_2_2D_after.png  used on input line
- 182.
+ 185.
 (pdftex.def)             Requested size: 267.62419pt x 178.41612pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 199--201
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 186.
+See the caption package documentation for explanation.
+
+[6 <./images//uncharged_2_2D_start.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 203--205
 
  []
 
-<./images//uncharged_random.png, id=168, 517.935pt x 354.57469pt>
+<./images//uncharged_random.png, id=202, 517.935pt x 354.57469pt>
 File: ./images//uncharged_random.png Graphic file (type png)
 <use ./images//uncharged_random.png>
-Package pdftex.def Info: ./images//uncharged_random.png  used on input line 202
+Package pdftex.def Info: ./images//uncharged_random.png  used on input line 206
 .
 (pdftex.def)             Requested size: 258.96686pt x 177.28691pt.
-[6 <./images//uncharged_2_2D_after.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 205--208
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 207.
+See the caption package documentation for explanation.
+
+[7 <./images//uncharged_2_2D_after.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 210--213
 
  []
 
-<./images//uncharged_random_dist.png, id=174, 562.35094pt x 456.20438pt>
+<./images//uncharged_random_dist.png, id=210, 562.35094pt x 456.20438pt>
 File: ./images//uncharged_random_dist.png Graphic file (type png)
 <use ./images//uncharged_random_dist.png>
 Package pdftex.def Info: ./images//uncharged_random_dist.png  used on input lin
-e 209.
+e 214.
 (pdftex.def)             Requested size: 281.17477pt x 228.10162pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 212--216
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 215.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--222
 
  []
 
-<./images//mb_wiki.png, id=175, 438.13687pt x 355.3275pt>
+[8 <./images//uncharged_random.png> <./images//uncharged_random_dist.png>]
+<./images//mb_wiki.png, id=219, 438.13687pt x 355.3275pt>
 File: ./images//mb_wiki.png Graphic file (type png)
 <use ./images//mb_wiki.png>
-Package pdftex.def Info: ./images//mb_wiki.png  used on input line 217.
+Package pdftex.def Info: ./images//mb_wiki.png  used on input line 223.
 (pdftex.def)             Requested size: 219.06789pt x 177.6633pt.
-[7 <./images//uncharged_random.png> <./images//uncharged_random_dist.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 220--222
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 224.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 227--229
 
  []
 
-<./images//uncharged_random_energy.png, id=183, 551.81157pt x 453.94594pt>
+<./images//uncharged_random_energy.png, id=220, 551.81157pt x 453.94594pt>
 File: ./images//uncharged_random_energy.png Graphic file (type png)
 <use ./images//uncharged_random_energy.png>
 Package pdftex.def Info: ./images//uncharged_random_energy.png  used on input l
-ine 223.
+ine 230.
 (pdftex.def)             Requested size: 275.9051pt x 226.97241pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 227--234
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 231.
+See the caption package documentation for explanation.
+
+[9 <./images//mb_wiki.png> <./images//uncharged_random_energy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 244--246
 
  []
 
-[8 <./images//mb_wiki.png> <./images//uncharged_random_energy.png>]
-<./images//uncharged_pool.png, id=190, 533.74406pt x 371.13657pt>
-File: ./images//uncharged_pool.png Graphic file (type png)
-<use ./images//uncharged_pool.png>
-Package pdftex.def Info: ./images//uncharged_pool.png  used on input line 235.
-(pdftex.def)             Requested size: 266.87137pt x 185.56783pt.
-<./images//uncharged_pool_dist.png, id=191, 582.67688pt x 451.6875pt>
-File: ./images//uncharged_pool_dist.png Graphic file (type png)
-<use ./images//uncharged_pool_dist.png>
-Package pdftex.def Info: ./images//uncharged_pool_dist.png  used on input line 
-236.
-(pdftex.def)             Requested size: 291.33772pt x 225.84319pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 239--242
-
- []
-
-<./images//uncharged_pool_2.png, id=192, 517.18219pt x 371.13657pt>
-File: ./images//uncharged_pool_2.png Graphic file (type png)
-<use ./images//uncharged_pool_2.png>
-Package pdftex.def Info: ./images//uncharged_pool_2.png  used on input line 243
-.
-(pdftex.def)             Requested size: 258.59045pt x 185.56783pt.
-<./images//uncharged_pool_dist_2.png, id=193, 583.42969pt x 434.37282pt>
-File: ./images//uncharged_pool_dist_2.png Graphic file (type png)
-<use ./images//uncharged_pool_dist_2.png>
-Package pdftex.def Info: ./images//uncharged_pool_dist_2.png  used on input lin
-e 244.
-(pdftex.def)             Requested size: 291.71413pt x 217.18587pt.
-[9 <./images//uncharged_pool.png> <./images//uncharged_pool_dist.png>] [10 <./i
-mages//uncharged_pool_2.png> <./images//uncharged_pool_dist_2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 257--259
-
- []
-
-<./images//charged_2_same.png, id=206, 541.27219pt x 370.38374pt>
+<./images//charged_2_same.png, id=228, 541.27219pt x 370.38374pt>
 File: ./images//charged_2_same.png Graphic file (type png)
 <use ./images//charged_2_same.png>
-Package pdftex.def Info: ./images//charged_2_same.png  used on input line 260.
+Package pdftex.def Info: ./images//charged_2_same.png  used on input line 247.
 (pdftex.def)             Requested size: 270.63542pt x 185.1914pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 263--269
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 248.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 251--257
 
  []
 
-<./images//charged_2_same_energy.png, id=207, 572.1375pt x 452.4403pt>
+[10 <./images//charged_2_same.png>]
+<./images//charged_2_same_energy.png, id=236, 572.1375pt x 452.4403pt>
 File: ./images//charged_2_same_energy.png Graphic file (type png)
 <use ./images//charged_2_same_energy.png>
 Package pdftex.def Info: ./images//charged_2_same_energy.png  used on input lin
-e 270.
+e 258.
 (pdftex.def)             Requested size: 286.06804pt x 226.2196pt.
-[11 <./images//charged_2_same.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 273--277
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 259.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--266
 
  []
 
-<./images//charged_2_opp.png, id=213, 536.0025pt x 365.86688pt>
+<./images//charged_2_opp.png, id=237, 536.0025pt x 365.86688pt>
 File: ./images//charged_2_opp.png Graphic file (type png)
 <use ./images//charged_2_opp.png>
-Package pdftex.def Info: ./images//charged_2_opp.png  used on input line 278.
+Package pdftex.def Info: ./images//charged_2_opp.png  used on input line 267.
 (pdftex.def)             Requested size: 268.0006pt x 182.93298pt.
-<./images//charged_2_opp_energy.png, id=214, 561.59813pt x 447.92343pt>
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 268.
+See the caption package documentation for explanation.
+
+[11 <./images//charged_2_same_energy.png> <./images//charged_2_opp.png>]
+<./images//charged_2_opp_energy.png, id=245, 561.59813pt x 447.92343pt>
 File: ./images//charged_2_opp_energy.png Graphic file (type png)
 <use ./images//charged_2_opp_energy.png>
 Package pdftex.def Info: ./images//charged_2_opp_energy.png  used on input line
- 279.
+ 269.
 (pdftex.def)             Requested size: 280.79837pt x 223.96117pt.
-[12 <./images//charged_2_same_energy.png> <./images//charged_2_opp.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 303--309
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 270.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--279
 
  []
 
-[13 <./images//charged_2_opp_energy.png>]
-<./images//charged_2_opp_energy_no_collision.png, id=227, 554.82281pt x 459.968
-44pt>
-File: ./images//charged_2_opp_energy_no_collision.png Graphic file (type png)
-<use ./images//charged_2_opp_energy_no_collision.png>
-Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision.png  used 
-on input line 310.
-(pdftex.def)             Requested size: 277.41072pt x 229.98366pt.
-<./images//charged_2_opp_energy_no_collision_half_time.png, id=228, 572.1375pt 
-x 452.4403pt>
-File: ./images//charged_2_opp_energy_no_collision_half_time.png Graphic file (t
-ype png)
-<use ./images//charged_2_opp_energy_no_collision_half_time.png>
-Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision_half_time.
-png  used on input line 311.
-(pdftex.def)             Requested size: 286.06804pt x 226.2196pt.
-<./images//charged_2_opp_energy_no_collision_tenth_time.png, id=229, 562.35094p
-t x 459.21562pt>
-File: ./images//charged_2_opp_energy_no_collision_tenth_time.png Graphic file (
-type png)
-<use ./images//charged_2_opp_energy_no_collision_tenth_time.png>
-Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision_tenth_time
-.png  used on input line 314.
-(pdftex.def)             Requested size: 281.17477pt x 229.60724pt.
- [14 <./images//charged_2_opp_energy_no_collision.png> <./images//charged_2_opp
-_energy_no_collision_half_time.png>]
+<./images//orbit.png, id=246, 559.33969pt x 396.7322pt>
+File: ./images//orbit.png Graphic file (type png)
+<use ./images//orbit.png>
+Package pdftex.def Info: ./images//orbit.png  used on input line 280.
+(pdftex.def)             Requested size: 279.66916pt x 198.3656pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 281.
+See the caption package documentation for explanation.
+
+[12 <./images//charged_2_opp_energy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 284--288
+
+ []
+
+<./images//orbit_energy.png, id=254, 561.59813pt x 450.18187pt>
+File: ./images//orbit_energy.png Graphic file (type png)
+<use ./images//orbit_energy.png>
+Package pdftex.def Info: ./images//orbit_energy.png  used on input line 289.
+(pdftex.def)             Requested size: 280.79837pt x 225.09038pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 290.
+See the caption package documentation for explanation.
+
+[13 <./images//orbit.png> <./images//orbit_energy.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 293--299
+
+ []
+
+<./images//atom.png, id=263, 560.8453pt x 385.44pt>
+File: ./images//atom.png Graphic file (type png)
+<use ./images//atom.png>
+Package pdftex.def Info: ./images//atom.png  used on input line 300.
+(pdftex.def)             Requested size: 280.42197pt x 192.71953pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 301.
+See the caption package documentation for explanation.
+
+<./images//atom_energy.png, id=264, 556.32843pt x 446.41782pt>
+File: ./images//atom_energy.png Graphic file (type png)
+<use ./images//atom_energy.png>
+Package pdftex.def Info: ./images//atom_energy.png  used on input line 302.
+(pdftex.def)             Requested size: 278.16353pt x 223.20836pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 303.
+See the caption package documentation for explanation.
+
+[14 <./images//atom.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 307--311
+
+ []
+
+<./images//charged_random.png, id=272, 536.0025pt x 380.92313pt>
+File: ./images//charged_random.png Graphic file (type png)
+<use ./images//charged_random.png>
+Package pdftex.def Info: ./images//charged_random.png  used on input line 312.
+(pdftex.def)             Requested size: 268.0006pt x 190.46109pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 313.
+See the caption package documentation for explanation.
+
+[15 <./images//atom_energy.png> <./images//charged_random.png>]
+<./images//charged_random_energy.png, id=281, 554.82281pt x 439.6425pt>
+File: ./images//charged_random_energy.png Graphic file (type png)
+<use ./images//charged_random_energy.png>
+Package pdftex.def Info: ./images//charged_random_energy.png  used on input lin
+e 314.
+(pdftex.def)             Requested size: 277.41072pt x 219.82071pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 315.
+See the caption package documentation for explanation.
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 318--321
 
  []
 
-<./images//orbit.png, id=236, 559.33969pt x 396.7322pt>
-File: ./images//orbit.png Graphic file (type png)
-<use ./images//orbit.png>
-Package pdftex.def Info: ./images//orbit.png  used on input line 322.
-(pdftex.def)             Requested size: 279.66916pt x 198.3656pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 325--329
-
- []
-
-[15 <./images//charged_2_opp_energy_no_collision_tenth_time.png> <./images//orb
-it.png>]
-<./images//orbit_energy.png, id=243, 561.59813pt x 450.18187pt>
-File: ./images//orbit_energy.png Graphic file (type png)
-<use ./images//orbit_energy.png>
-Package pdftex.def Info: ./images//orbit_energy.png  used on input line 330.
-(pdftex.def)             Requested size: 280.79837pt x 225.09038pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 333--339
-
- []
-
-<./images//atom.png, id=244, 560.8453pt x 385.44pt>
-File: ./images//atom.png Graphic file (type png)
-<use ./images//atom.png>
-Package pdftex.def Info: ./images//atom.png  used on input line 340.
-(pdftex.def)             Requested size: 280.42197pt x 192.71953pt.
-<./images//atom_energy.png, id=245, 556.32843pt x 446.41782pt>
-File: ./images//atom_energy.png Graphic file (type png)
-<use ./images//atom_energy.png>
-Package pdftex.def Info: ./images//atom_energy.png  used on input line 341.
-(pdftex.def)             Requested size: 278.16353pt x 223.20836pt.
-[16 <./images//orbit_energy.png> <./images//atom.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 345--349
-
- []
-
-<./images//charged_random.png, id=252, 536.0025pt x 380.92313pt>
-File: ./images//charged_random.png Graphic file (type png)
-<use ./images//charged_random.png>
-Package pdftex.def Info: ./images//charged_random.png  used on input line 350.
-(pdftex.def)             Requested size: 268.0006pt x 190.46109pt.
-<./images//charged_random_energy.png, id=253, 554.82281pt x 439.6425pt>
-File: ./images//charged_random_energy.png Graphic file (type png)
-<use ./images//charged_random_energy.png>
-Package pdftex.def Info: ./images//charged_random_energy.png  used on input lin
-e 351.
-(pdftex.def)             Requested size: 277.41072pt x 219.82071pt.
-[17 <./images//atom_energy.png> <./images//charged_random.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 354--357
-
- []
-
-<./images//charged_random_dist.png, id=260, 580.41844pt x 441.90094pt>
+<./images//charged_random_dist.png, id=282, 580.41844pt x 441.90094pt>
 File: ./images//charged_random_dist.png Graphic file (type png)
 <use ./images//charged_random_dist.png>
 Package pdftex.def Info: ./images//charged_random_dist.png  used on input line 
-358.
+322.
 (pdftex.def)             Requested size: 290.20851pt x 220.94992pt.
-[18 <./images//charged_random_energy.png> <./images//charged_random_dist.png>]
-Underfull \hbox (badness 1137) in paragraph at lines 381--381
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 323.
+See the caption package documentation for explanation.
+
+[16 <./images//charged_random_energy.png> <./images//charged_random_dist.png>]
+Underfull \hbox (badness 1137) in paragraph at lines 345--345
 [][][]\OT1/cmr/m/n/8 Dr. Wad-s-ley ini-tially told me about the equa-tion, but 
 the linked fo-rum post
  []
 
 
-Underfull \hbox (badness 2644) in paragraph at lines 381--381
+Underfull \hbox (badness 2644) in paragraph at lines 345--345
 \OT1/cmr/m/n/8 also states the same method: []$\OT1/cmtt/m/n/8 https : / / math
  . stackexchange . com / questions / 1438002 /
  []
 
-[19]
-Overfull \hbox (11.88023pt too wide) in paragraph at lines 436--440
+
+Underfull \hbox (badness 10000) in paragraph at lines 358--365
+
+ []
+
+<./images//uncharged_pool.png, id=293, 533.74406pt x 371.13657pt>
+File: ./images//uncharged_pool.png Graphic file (type png)
+<use ./images//uncharged_pool.png>
+Package pdftex.def Info: ./images//uncharged_pool.png  used on input line 366.
+(pdftex.def)             Requested size: 266.87137pt x 185.56783pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 367.
+See the caption package documentation for explanation.
+
+[17]
+<./images//uncharged_pool_dist.png, id=301, 582.67688pt x 451.6875pt>
+File: ./images//uncharged_pool_dist.png Graphic file (type png)
+<use ./images//uncharged_pool_dist.png>
+Package pdftex.def Info: ./images//uncharged_pool_dist.png  used on input line 
+368.
+(pdftex.def)             Requested size: 291.33772pt x 225.84319pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 369.
+See the caption package documentation for explanation.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 372--375
+
+ []
+
+<./images//uncharged_pool_2.png, id=302, 517.18219pt x 371.13657pt>
+File: ./images//uncharged_pool_2.png Graphic file (type png)
+<use ./images//uncharged_pool_2.png>
+Package pdftex.def Info: ./images//uncharged_pool_2.png  used on input line 376
+.
+(pdftex.def)             Requested size: 258.59045pt x 185.56783pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 377.
+See the caption package documentation for explanation.
+
+[18 <./images//uncharged_pool.png> <./images//uncharged_pool_dist.png>]
+<./images//uncharged_pool_dist_2.png, id=311, 583.42969pt x 434.37282pt>
+File: ./images//uncharged_pool_dist_2.png Graphic file (type png)
+<use ./images//uncharged_pool_dist_2.png>
+Package pdftex.def Info: ./images//uncharged_pool_dist_2.png  used on input lin
+e 378.
+(pdftex.def)             Requested size: 291.71413pt x 217.18587pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 379.
+See the caption package documentation for explanation.
+
+[19 <./images//uncharged_pool_2.png> <./images//uncharged_pool_dist_2.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 429--435
+
+ []
+
+[20]
+<./images//charged_2_opp_energy_no_collision.png, id=325, 554.82281pt x 459.968
+44pt>
+File: ./images//charged_2_opp_energy_no_collision.png Graphic file (type png)
+<use ./images//charged_2_opp_energy_no_collision.png>
+Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision.png  used 
+on input line 436.
+(pdftex.def)             Requested size: 277.41072pt x 229.98366pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 437.
+See the caption package documentation for explanation.
+
+<./images//charged_2_opp_energy_no_collision_half_time.png, id=326, 572.1375pt 
+x 452.4403pt>
+File: ./images//charged_2_opp_energy_no_collision_half_time.png Graphic file (t
+ype png)
+<use ./images//charged_2_opp_energy_no_collision_half_time.png>
+Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision_half_time.
+png  used on input line 438.
+(pdftex.def)             Requested size: 286.06804pt x 226.2196pt.
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 439.
+See the caption package documentation for explanation.
+
+[21 <./images//charged_2_opp_energy_no_collision.png>]
+<./images//charged_2_opp_energy_no_collision_tenth_time.png, id=333, 562.35094p
+t x 459.21562pt>
+File: ./images//charged_2_opp_energy_no_collision_tenth_time.png Graphic file (
+type png)
+<use ./images//charged_2_opp_energy_no_collision_tenth_time.png>
+Package pdftex.def Info: ./images//charged_2_opp_energy_no_collision_tenth_time
+.png  used on input line 440.
+(pdftex.def)             Requested size: 281.17477pt x 229.60724pt.
+
+
+Package caption Warning: The option `hypcap=true' will be ignored for this
+(caption)                particular \caption on input line 441.
+See the caption package documentation for explanation.
+
+[22 <./images//charged_2_opp_energy_no_collision_half_time.png> <./images//char
+ged_2_opp_energy_no_collision_tenth_time.png>]
+Overfull \hbox (11.88023pt too wide) in paragraph at lines 465--469
 []\OT1/cmr/m/n/10 Count the num-ber of col-li-sions be-tween par-ti-cles agains
 t a wall. 3Blue1Brown
  []
 
-[20] [21] (report.aux)
+[23] [24] (report.aux)
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: BB2E0F9C90BEE044DA255DEF84DFF8D3;1417.
+(rerunfilecheck)             Checksum: 2399FE72D6EB9FD796B927598BCC3A8A;1603.
  ) 
 Here is how much of TeX's memory you used:
- 17731 strings out of 479697
- 333006 string characters out of 2877009
- 794497 words of memory out of 3000000
- 34435 multiletter control sequences out of 15000+200000
+ 19052 strings out of 479697
+ 358163 string characters out of 2877009
+ 817198 words of memory out of 3000000
+ 35718 multiletter control sequences out of 15000+200000
  409484 words of font info for 49 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,9n,111p,408b,397s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 108i,9n,111p,408b,530s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\hunta\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm
 1000.pk><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/
 Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program File
@@ -930,9 +1091,9 @@ ic/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm
 :/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fil
 es/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX/fo
 nts/type1/public/amsfonts/cm/cmtt8.pfb>
-Output written on report.pdf (21 pages, 541805 bytes).
+Output written on report.pdf (24 pages, 557135 bytes).
 PDF statistics:
- 362 PDF objects out of 1000 (max. 8388607)
- 64 named destinations out of 1000 (max. 500000)
- 311 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 433 PDF objects out of 1000 (max. 8388607)
+ 94 named destinations out of 1000 (max. 500000)
+ 319 words of extra memory for PDF output out of 10000 (max. 10000000)
 
